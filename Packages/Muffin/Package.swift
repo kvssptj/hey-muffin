@@ -39,5 +39,13 @@ let package = Package(
                 .swiftLanguageMode(.v5),
             ]
         ),
+        .testTarget(
+            name: "MuffinCoreTests",
+            dependencies: ["MuffinCore"],
+            path: "Tests/MuffinCoreTests",
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
     ]
 )
