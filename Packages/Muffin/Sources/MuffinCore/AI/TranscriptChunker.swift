@@ -1,3 +1,5 @@
+import Foundation
+
 /// Splits a transcript into overlapping word-based chunks that fit within
 /// Apple Foundation Models' context window.
 ///
