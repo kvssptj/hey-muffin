@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Muffin — Note desk (mock)</title>
+  <style>
+    :root {
+      --ivory: #f5f3ec;
+      --stone: #e5e2d8;
+      --ink: #35434a;
+      --ink-dim: #5a656c;
+      --olive: #7e8870;
+      --olive-soft: #9da58a;
+      --selection: rgba(157, 165, 138, 0.22);
+      --hairline: rgba(150, 163, 150, 0.45);
+      --sky: #dce8ee;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 20% 0%, var(--sky) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(157, 165, 138, 0.25) 0%, transparent 45%),
+        var(--ivory);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      height: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      border-left: 1px solid var(--hairline);
+      border-right: 1px solid var(--hairline);
+      background: rgba(245, 243, 236, 0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Sidebar */
+    aside {
+      padding: 18px 12px;
+      border-right: 1px solid var(--hairline);
+      background: rgba(245, 243, 236, 0.48);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 6px;
+      font-family: "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(145deg, var(--olive-soft), var(--olive));
+    }
+    nav { display: flex; flex-direction: column; gap: 2px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: default;
+      border: 1px solid transparent;
+    }
+    .nav-item.primary {
+      background: var(--ivory);
+      border-color: var(--stone);
+      margin-bottom: 6px;
+    }
+    .nav-item.active { background: var(--selection); font-weight: 600; }
+    .nav-item .ico {
+      width: 16px;
+      text-align: center;
+      color: var(--ink-dim);
+      font-size: 12px;
+    }
+    .nav-item.active .ico,
+    .nav-item.primary .ico { color: var(--olive); }
+
+    /* Main */
+    main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+    }
+    .note-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .note-header h1 {
+      margin: 0;
+      font-family: "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .meta {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+    .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .btn {
+      appearance: none;
+      border: 1px solid var(--stone);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--ivory); }
+    .btn.primary {
+      background: var(--olive);
+      border-color: var(--olive);
+      color: #f7f6f2;
+      font-weight: 600;
+    }
+    .btn.primary:hover { filter: brightness(0.95); }
+
+    .split {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      min-height: 0;
+    }
+    .divider { background: var(--hairline); }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      padding: 14px 18px 18px;
+    }
+    .pane-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      color: var(--olive);
+      margin-bottom: 10px;
+    }
+    .pane-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    select {
+      border: 1px solid var(--stone);
+      background: #fff;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 12.5px;
+      color: var(--ink);
+      max-width: 160px;
+    }
+    .hint {
+      font-size: 12px;
+      color: var(--ink-dim);
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+
+    .panel {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--stone);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .panel.edit { white-space: pre-wrap; }
+    .panel h3 {
+      margin: 0 0 8px;
+      font-family: "Iowan Old Style", Georgia, serif;
+      font-size: 15px;
+    }
+    .panel ul { margin: 8px 0; padding-left: 1.2em; }
+    .panel li { margin: 4px 0; }
+
+    .banner {
+      margin: 12px 24px 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(220, 232, 238, 0.65);
+      border: 1px solid var(--stone);
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+    .banner strong { color: var(--ink); font-weight: 600; }
+
+    /* Narrow toggle demo */
+    .segment {
+      display: none;
+      margin: 12px 24px 0;
+      gap: 0;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+      width: fit-content;
+    }
+    .segment button {
+      border: 0;
+      background: transparent;
+      padding: 7px 14px;
+      font-size: 12.5px;
+      cursor: pointer;
+      color: var(--ink-dim);
+    }
+    .segment button.on {
+      background: var(--selection);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      aside { display: none; }
+      .segment { display: flex; }
+      .split.summary-only .pane-transcript,
+      .split.transcript-only .pane-summary { display: none; }
+      .split { grid-template-columns: 1fr; }
+      .divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand"><div class="mark" aria-hidden="true"></div>Muffin</div>
+      <nav>
+        <div class="nav-item primary"><span class="ico">◉</span> Record</div>
+        <div class="nav-item"><span class="ico">≡</span> Library</div>
+        <div class="nav-item"><span class="ico">☆</span> Favorites</div>
+        <div class="nav-item"><span class="ico">⚙</span> Settings</div>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="banner">
+        <strong>Mock only</strong> — Note desk: transcript + summary side by side. No separate Outputs nav. Format picks how the summary is written.
+      </div>
+
+      <header class="note-header">
+        <div>
+          <h1>Standup notes from Thursday</h1>
+          <p class="meta">12:04 · 28 Aug 2026 · Saved on this Mac</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn" type="button">Export…</button>
+          <button class="btn" type="button">Show in Finder</button>
+        </div>
+      </header>
+
+      <div class="segment" id="segment">
+        <button type="button" class="on" data-pane="transcript">Transcript</button>
+        <button type="button" data-pane="summary">Summary</button>
+      </div>
+
+      <div class="split" id="split">
+        <section class="pane pane-transcript">
+          <div class="pane-label">TRANSCRIPT</div>
+          <div class="pane-toolbar">
+            <button class="btn" type="button">Copy</button>
+            <button class="btn" type="button">Export as .txt</button>
+          </div>
+          <p class="hint">Edits autosave. Generating a summary always uses the latest text here.</p>
+          <div class="panel edit" contenteditable="true" spellcheck="false">Okay so three things from my side. The Fn hold to record is working after Accessibility. Clipboard copy on stop feels right.
+
+Library still feels split from Outputs — we should open a note and see the raw transcript next to a summary, and let people pick the summary format.
+
+UI polish can wait a bit; the IA change matters more. Prefer olive ivory editorial, not a full rebrand.</div>
+        </section>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <section class="pane pane-summary">
+          <div class="pane-label">SUMMARY</div>
+          <div class="pane-toolbar">
+            <label>
+              <span class="visually-hidden">Format</span>
+              <select id="format" aria-label="Summary format">
+                <option selected>Summary</option>
+                <option>Meeting notes</option>
+                <option>Action items</option>
+                <option>Blog draft</option>
+                <option>Custom</option>
+              </select>
+            </label>
+            <select aria-label="Provider">
+              <option>Apple Intelligence</option>
+              <option>OpenRouter</option>
+              <option>Ollama</option>
+            </select>
+            <button class="btn primary" type="button">Generate summary</button>
+            <button class="btn" type="button">Copy summary</button>
+          </div>
+          <p class="hint" id="format-hint">Concise paragraphs. Keeps names, numbers, and decisions.</p>
+          <div class="panel" id="summary-body">
+            <h3>Summary</h3>
+            <p>Hold-Fn recording works once Accessibility is granted; copying the transcript on stop is the right behavior.</p>
+            <p>The product gap is IA: opening a library item should show raw transcript beside a summary, with a format picker — not a separate Outputs screen.</p>
+            <p>Visual polish can follow; keep the existing editorial look rather than a rebrand.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <style>
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+  </style>
+
+  <script>
+    const hints = {
+      "Summary": "Concise paragraphs. Keeps names, numbers, and decisions.",
+      "Meeting notes": "Attendees, topics, decisions, action items, open questions.",
+      "Action items": "Numbered list with owners and deadlines when mentioned.",
+      "Blog draft": "Title, intro, and headed sections in the speaker’s voice.",
+      "Custom": "Follow your own instructions exactly."
+    };
+    const bodies = {
+      "Summary": `<h3>Summary</h3>
+        <p>Hold-Fn recording works once Accessibility is granted; copying the transcript on stop is the right behavior.</p>
+        <p>The product gap is IA: opening a library item should show raw transcript beside a summary, with a format picker — not a separate Outputs screen.</p>
+        <p>Visual polish can follow; keep the existing editorial look rather than a rebrand.</p>`,
+      "Meeting notes": `<h3>Meeting notes</h3>
+        <p><strong>Topics</strong></p>
+        <ul>
+          <li>Fn hold + Accessibility</li>
+          <li>Clipboard on stop</li>
+          <li>Note desk: transcript + summary</li>
+        </ul>
+        <p><strong>Decisions</strong></p>
+        <ul>
+          <li>Right pane is Summary, not Output</li>
+          <li>User picks summary format</li>
+        </ul>
+        <p><strong>Action items</strong></p>
+        <ul>
+          <li>Ship unified Note view</li>
+          <li>Option A UI polish after IA</li>
+        </ul>`,
+      "Action items": `<h3>Action items</h3>
+        <ol>
+          <li>Build Note view with transcript | summary split</li>
+          <li>Rename UI copy from Output → Summary; add Format picker</li>
+          <li>Remove Transcript / Outputs from sidebar</li>
+          <li>Apply Option A polish on Library + Note chrome</li>
+        </ol>`,
+      "Blog draft": `<h3>One note, two panes</h3>
+        <p>Voice notes shouldn’t scatter across Transcript and Outputs. When you open a take, you want the words you said and the shape you need next to each other.</p>
+        <p>Pick a format — summary, meeting notes, action items — and generate. Same desk, less hunting.</p>`,
+      "Custom": `<h3>Custom</h3>
+        <p><em>Empty until you add instructions and generate.</em></p>`
+    };
+
+    const format = document.getElementById("format");
+    const hint = document.getElementById("format-hint");
+    const body = document.getElementById("summary-body");
+    format.addEventListener("change", () => {
+      const v = format.value;
+      hint.textContent = hints[v];
+      body.innerHTML = bodies[v];
+    });
+
+    const split = document.getElementById("split");
+    document.querySelectorAll("#segment button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#segment button").forEach((b) => b.classList.remove("on"));
+        btn.classList.add("on");
+        split.classList.remove("transcript-only", "summary-only");
+        if (btn.dataset.pane === "transcript") split.classList.add("transcript-only");
+        if (btn.dataset.pane === "summary") split.classList.add("summary-only");
+      });
+    });
+  </script>
+</body>
+</html>

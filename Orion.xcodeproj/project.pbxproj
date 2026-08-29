@@ -1,0 +1,478 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C3D4E5F64789012A3B4C5D6E /* MuffinCore in Frameworks */ = {isa = PBXBuildFile; productRef = B2C3D4E5F6478901A2B3C4D5 /* MuffinCore */; };
+		06AF73C4B0DF4C179A3F3AE8 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BFEACDCC2E45A28C44AD69 /* SummaryView.swift */; };
+		0F6F2BD845D94F91A9432615 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79DDC174C3774766AB653853 /* Assets.xcassets */; };
+		142BE788907542319815C881 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332A3371D02474C8A46EC6F /* RecordView.swift */; };
+		2B96626232024856B72096E2 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAC95FC36574B80905BD690 /* WaveformView.swift */; };
+		496D0689F9824D1E9A3CEEDB /* EngravedRecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86912B63C1043D6917ACB9C /* EngravedRecordButton.swift */; };
+		5A79F23AEBF841BC87DDA261 /* DocumentChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0CB40D8555403896BD8D1C /* DocumentChrome.swift */; };
+		5B475C3C65FE4CC9AB4ADE48 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46ABD0B3D32E4FC38B959D99 /* TranscriptView.swift */; };
+		74DFB663CBB246669850D5D1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885598A0824E487E8911A839 /* Theme.swift */; };
+		90F23FBECDF34E0EA499675E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9954EF65218746F5AE26995D /* SettingsView.swift */; };
+		9AF62F4F565047168C908A8D /* OrionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBF5519B7FE4EEE93302855 /* OrionApp.swift */; };
+		AE21A8D1CC9D4693A048861E /* GuillocheBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE395E76C8B4CFC9112038A /* GuillocheBackground.swift */; };
+		F1E2D3C4B5A697887766554F /* ConfidenceStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6078899AABBCC /* ConfidenceStyling.swift */; };
+		B4C3C1E380C04B3FB5BDE2B7 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBB213A5AEC47EA85467220 /* AppNavigation.swift */; };
+		B6C7A4631C34434499881D36 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B04921C532448E4906ED49D /* ContentView.swift */; };
+		DB7BC374E81B4C5184610F61 /* RecordingsLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184E0AACCB4C0CB99360A5 /* RecordingsLibraryView.swift */; };
+		A1C3D2E4F5B6789012345678 /* TemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C4D6E8F0A2B4C6D8E0F2A4 /* TemplatesView.swift */; };
+		E8F9A0B1C2D3E4F5A6B7C8D9 /* PushToTalkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8F9A0B1C2D3E4F5A6B7C8 /* PushToTalkMonitor.swift */; };
+		A0B1C2D3E4F5A6B7C8D9E0F1 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B1C2D3E4F5A6B7C8D9E0F1 /* AppModel.swift */; };
+		C0B1C2D3E4F5A6B7C8D9E0F2 /* MenuBarRecordingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B1C2D3E4F5A6B7C8D9E0F2 /* MenuBarRecordingMenu.swift */; };
+		8AB92CA22C0D075D6EA8774E /* OrionControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C758F9AE4C13643AFE17E3B1 /* OrionControls.swift */; };
+		528B8C945729D2AC328EF8BF /* SummaryDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA950275088CE738F96C4DDC /* SummaryDocumentView.swift */; };
+		70A1FA1C8112F19B09E02C5F /* TranscriptDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8658A006451EDE86760D94EB /* TranscriptDocumentView.swift */; };
+		72C5CBCFFDF033503DE92ABB /* OrionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CDDC4217D939939CC9D4B1 /* OrionCard.swift */; };
+		8F443E027FC0F477A27075C5 /* RecordingListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C1C611C757B7C1D2229614 /* RecordingListItemView.swift */; };
+		41A4A0B63C06467040F3BCBC /* RecordingChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04955986D3BE9E38EB3D2BF3 /* RecordingChrome.swift */; };
+		0F65DA1F0AF16EFDDD5C76A6 /* NoteChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3FD365F7939737B080AC69 /* NoteChrome.swift */; };
+		87D55EAC681115FFB0C25616 /* RecordingsDeskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB0FB50B00323CD2C4B4310 /* RecordingsDeskView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2C0CB40D8555403896BD8D1C /* DocumentChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentChrome.swift; sourceTree = "<group>"; };
+		2D3FDC8B70F045819C254BBB /* Orion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EE395E76C8B4CFC9112038A /* GuillocheBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuillocheBackground.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6078899AABBCC /* ConfidenceStyling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfidenceStyling.swift; sourceTree = "<group>"; };
+		46ABD0B3D32E4FC38B959D99 /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
+		6DBF5519B7FE4EEE93302855 /* OrionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionApp.swift; sourceTree = "<group>"; };
+		79DDC174C3774766AB653853 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7B04921C532448E4906ED49D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7DBB213A5AEC47EA85467220 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
+		8332A3371D02474C8A46EC6F /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		885598A0824E487E8911A839 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		9954EF65218746F5AE26995D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9FAC95FC36574B80905BD690 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		B4184E0AACCB4C0CB99360A5 /* RecordingsLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingsLibraryView.swift; sourceTree = "<group>"; };
+		B4BFEACDCC2E45A28C44AD69 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		D7E8F9A0B1C2D3E4F5A6B7C8 /* PushToTalkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalkMonitor.swift; sourceTree = "<group>"; };
+		B0B1C2D3E4F5A6B7C8D9E0F1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		D0B1C2D3E4F5A6B7C8D9E0F2 /* MenuBarRecordingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarRecordingMenu.swift; sourceTree = "<group>"; };
+		E74A5D91D9314DAE813AC347 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F86912B63C1043D6917ACB9C /* EngravedRecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngravedRecordButton.swift; sourceTree = "<group>"; };
+		C758F9AE4C13643AFE17E3B1 /* OrionControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionControls.swift; sourceTree = "<group>"; };
+		CA950275088CE738F96C4DDC /* SummaryDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryDocumentView.swift; sourceTree = "<group>"; };
+		8658A006451EDE86760D94EB /* TranscriptDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDocumentView.swift; sourceTree = "<group>"; };
+		36CDDC4217D939939CC9D4B1 /* OrionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionCard.swift; sourceTree = "<group>"; };
+		A5C1C611C757B7C1D2229614 /* RecordingListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingListItemView.swift; sourceTree = "<group>"; };
+		04955986D3BE9E38EB3D2BF3 /* RecordingChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingChrome.swift; sourceTree = "<group>"; };
+		FD3FD365F7939737B080AC69 /* NoteChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteChrome.swift; sourceTree = "<group>"; };
+		1DB0FB50B00323CD2C4B4310 /* RecordingsDeskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingsDeskView.swift; sourceTree = "<group>"; };
+		B2C4D6E8F0A2B4C6D8E0F2A4 /* TemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatesView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E272F5BE83C74EFE9EDD3E8D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3D4E5F64789012A3B4C5D6E /* MuffinCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		002F3C1ACF6F4AC8A2623905 = {
+			isa = PBXGroup;
+			children = (
+				16275A6BD7C8491DBCF1CEA5 /* Orion */,
+				F573E962636B4E3B8880848A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		06319565F0DE4B809915F161 /* AI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		096CA97E1DD24EA5AE532FBC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				885598A0824E487E8911A839 /* Theme.swift */,
+				2EE395E76C8B4CFC9112038A /* GuillocheBackground.swift */,
+				A1B2C3D4E5F6078899AABBCC /* ConfidenceStyling.swift */,
+				7DBB213A5AEC47EA85467220 /* AppNavigation.swift */,
+				D0B1C2D3E4F5A6B7C8D9E0F2 /* MenuBarRecordingMenu.swift */,
+				CDAE7583AF3D4E7AA0D98EF2 /* Components */,
+				E34B397FD6D04924BCA21E27 /* Screens */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		16275A6BD7C8491DBCF1CEA5 /* Orion */ = {
+			isa = PBXGroup;
+			children = (
+				6DBF5519B7FE4EEE93302855 /* OrionApp.swift */,
+				B0B1C2D3E4F5A6B7C8D9E0F1 /* AppModel.swift */,
+				7B04921C532448E4906ED49D /* ContentView.swift */,
+				D7E8F9A0B1C2D3E4F5A6B7C8 /* PushToTalkMonitor.swift */,
+				096CA97E1DD24EA5AE532FBC /* UI */,
+				65C084B14CA347918BD90D9D /* Audio */,
+				CB6940182616485A94C7135E /* Speech */,
+				06319565F0DE4B809915F161 /* AI */,
+				745A105A796042BF87612596 /* Models */,
+				79DDC174C3774766AB653853 /* Assets.xcassets */,
+				E74A5D91D9314DAE813AC347 /* Info.plist */,
+			);
+			path = Orion;
+			sourceTree = "<group>";
+		};
+		65C084B14CA347918BD90D9D /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		745A105A796042BF87612596 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CB6940182616485A94C7135E /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Speech;
+			sourceTree = "<group>";
+		};
+		CDAE7583AF3D4E7AA0D98EF2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F86912B63C1043D6917ACB9C /* EngravedRecordButton.swift */,
+				C758F9AE4C13643AFE17E3B1 /* OrionControls.swift */,
+				CA950275088CE738F96C4DDC /* SummaryDocumentView.swift */,
+				8658A006451EDE86760D94EB /* TranscriptDocumentView.swift */,
+				36CDDC4217D939939CC9D4B1 /* OrionCard.swift */,
+				A5C1C611C757B7C1D2229614 /* RecordingListItemView.swift */,
+				04955986D3BE9E38EB3D2BF3 /* RecordingChrome.swift */,
+				FD3FD365F7939737B080AC69 /* NoteChrome.swift */,
+				9FAC95FC36574B80905BD690 /* WaveformView.swift */,
+				2C0CB40D8555403896BD8D1C /* DocumentChrome.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E34B397FD6D04924BCA21E27 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				8332A3371D02474C8A46EC6F /* RecordView.swift */,
+				46ABD0B3D32E4FC38B959D99 /* TranscriptView.swift */,
+				B4BFEACDCC2E45A28C44AD69 /* SummaryView.swift */,
+				B4184E0AACCB4C0CB99360A5 /* RecordingsLibraryView.swift */,
+				1DB0FB50B00323CD2C4B4310 /* RecordingsDeskView.swift */,
+				B2C4D6E8F0A2B4C6D8E0F2A4 /* TemplatesView.swift */,
+				9954EF65218746F5AE26995D /* SettingsView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F573E962636B4E3B8880848A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D3FDC8B70F045819C254BBB /* Orion.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2A570766CCEF4C87883B8C08 /* Orion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2402204A8834317839D7823 /* Build configuration list for PBXNativeTarget "Orion" */;
+			buildPhases = (
+				7B3E0A20BE384A7EA803FD06 /* Sources */,
+				E272F5BE83C74EFE9EDD3E8D /* Frameworks */,
+				F942ABB32EC94280B93B8D9A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Orion;
+			packageProductDependencies = (
+				B2C3D4E5F6478901A2B3C4D5 /* MuffinCore */,
+			);
+			productName = Orion;
+			productReference = 2D3FDC8B70F045819C254BBB /* Orion.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9B818433A252473DB4C2F118 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2660;
+			};
+			buildConfigurationList = DD77E76ED5634B4AB443E40E /* Build configuration list for PBXProject "Orion" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 002F3C1ACF6F4AC8A2623905;
+			packageReferences = (
+				A1B2C3D4E5F64789A0B1C2D3 /* XCLocalSwiftPackageReference "Packages/Muffin" */,
+			);
+			productRefGroup = F573E962636B4E3B8880848A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A570766CCEF4C87883B8C08 /* Orion */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F942ABB32EC94280B93B8D9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F6F2BD845D94F91A9432615 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7B3E0A20BE384A7EA803FD06 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AF62F4F565047168C908A8D /* OrionApp.swift in Sources */,
+				B6C7A4631C34434499881D36 /* ContentView.swift in Sources */,
+				74DFB663CBB246669850D5D1 /* Theme.swift in Sources */,
+				AE21A8D1CC9D4693A048861E /* GuillocheBackground.swift in Sources */,
+				F1E2D3C4B5A697887766554F /* ConfidenceStyling.swift in Sources */,
+				496D0689F9824D1E9A3CEEDB /* EngravedRecordButton.swift in Sources */,
+				2B96626232024856B72096E2 /* WaveformView.swift in Sources */,
+				5A79F23AEBF841BC87DDA261 /* DocumentChrome.swift in Sources */,
+				142BE788907542319815C881 /* RecordView.swift in Sources */,
+				5B475C3C65FE4CC9AB4ADE48 /* TranscriptView.swift in Sources */,
+				06AF73C4B0DF4C179A3F3AE8 /* SummaryView.swift in Sources */,
+				DB7BC374E81B4C5184610F61 /* RecordingsLibraryView.swift in Sources */,
+				87D55EAC681115FFB0C25616 /* RecordingsDeskView.swift in Sources */,
+				A1C3D2E4F5B6789012345678 /* TemplatesView.swift in Sources */,
+				90F23FBECDF34E0EA499675E /* SettingsView.swift in Sources */,
+				B4C3C1E380C04B3FB5BDE2B7 /* AppNavigation.swift in Sources */,
+				E8F9A0B1C2D3E4F5A6B7C8D9 /* PushToTalkMonitor.swift in Sources */,
+				A0B1C2D3E4F5A6B7C8D9E0F1 /* AppModel.swift in Sources */,
+				C0B1C2D3E4F5A6B7C8D9E0F2 /* MenuBarRecordingMenu.swift in Sources */,
+				8AB92CA22C0D075D6EA8774E /* OrionControls.swift in Sources */,
+				528B8C945729D2AC328EF8BF /* SummaryDocumentView.swift in Sources */,
+				70A1FA1C8112F19B09E02C5F /* TranscriptDocumentView.swift in Sources */,
+				72C5CBCFFDF033503DE92ABB /* OrionCard.swift in Sources */,
+				8F443E027FC0F477A27075C5 /* RecordingListItemView.swift in Sources */,
+				41A4A0B63C06467040F3BCBC /* RecordingChrome.swift in Sources */,
+				0F65DA1F0AF16EFDDD5C76A6 /* NoteChrome.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9D0D9B826A7341548A2EB45B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = Orion/Orion.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Orion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.muffin.app;
+				PRODUCT_NAME = Muffin;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C922F5C7F8C64100B0BBB83E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = Orion/Orion.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Orion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.muffin.app;
+				PRODUCT_NAME = Muffin;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D26745C266DA439C88419B0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E39529B0BAFF4B8DAD8AC845 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D2402204A8834317839D7823 /* Build configuration list for PBXNativeTarget "Orion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C922F5C7F8C64100B0BBB83E /* Debug */,
+				9D0D9B826A7341548A2EB45B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD77E76ED5634B4AB443E40E /* Build configuration list for PBXProject "Orion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E39529B0BAFF4B8DAD8AC845 /* Debug */,
+				D26745C266DA439C88419B0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A1B2C3D4E5F64789A0B1C2D3 /* XCLocalSwiftPackageReference "Packages/Muffin" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Muffin;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B2C3D4E5F6478901A2B3C4D5 /* MuffinCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3D4E5F64789A0B1C2D3 /* XCLocalSwiftPackageReference "Packages/Muffin" */;
+			productName = MuffinCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9B818433A252473DB4C2F118 /* Project object */;
+}

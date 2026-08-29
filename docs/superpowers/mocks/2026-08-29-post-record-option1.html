@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Muffin — Post-record (clean)</title>
+  <style>
+    :root {
+      --bg: #dde7ef;
+      --paper: #fafcfd;
+      --ink: #262b33;
+      --body: #3e4650;
+      --muted: #5a6472;
+      --border: #cbd8e2;
+      --olive: #4f5a3c;
+      --olive-tint: #e6eadd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px 20px;
+      font-family: "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 18% 0%, #cfe0ec 0%, transparent 48%),
+        radial-gradient(ellipse at 88% 90%, rgba(79, 90, 60, 0.12) 0%, transparent 42%),
+        var(--bg);
+    }
+    .card {
+      width: min(520px, 100%);
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 10px 28px rgba(38, 43, 51, 0.06);
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .status { display: flex; align-items: center; gap: 8px; }
+    .status .check {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--olive); color: #fff;
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 700;
+    }
+    .status h1 {
+      margin: 0;
+      font: 600 16px/1.2 "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+    }
+    .badge {
+      margin-left: auto;
+      font-size: 11.5px;
+      color: var(--olive);
+      background: var(--olive-tint);
+      border: 1px solid #b9c2a6;
+      border-radius: 999px;
+      padding: 3px 9px;
+    }
+    .hint {
+      margin: -4px 0 0 26px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .rule { height: 1px; background: var(--border); opacity: 0.85; }
+    .label {
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.07em; color: var(--olive);
+    }
+    .transcript {
+      margin: 0; max-height: 180px; overflow: auto;
+      font: 400 15px/1.55 "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+      color: var(--ink); white-space: pre-wrap;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    button {
+      appearance: none; border-radius: 5px;
+      font: 500 12.5px/1 system-ui, sans-serif;
+      padding: 8px 12px; cursor: default;
+    }
+    .primary { background: var(--olive); color: #fff; border: 1px solid var(--olive); }
+    .secondary { background: #e4edf2; color: #43678a; border: 1px solid #b7c9d8; }
+    .quiet { background: var(--paper); color: var(--body); border: 1px solid var(--border); }
+    .spacer { flex: 1; }
+    .icon {
+      width: 28px; height: 28px; border-radius: 5px;
+      border: 1px solid var(--border); background: var(--paper);
+      display: grid; place-items: center; font-size: 13px;
+    }
+    .caption {
+      position: fixed; bottom: 16px; left: 0; right: 0;
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <article class="card">
+    <div class="status">
+      <div class="check">✓</div>
+      <h1>Recording saved</h1>
+      <span class="badge">0m 28s · 40 words</span>
+    </div>
+    <p class="hint">On disk · already on your clipboard</p>
+    <div class="rule"></div>
+    <div class="label">TRANSCRIPT</div>
+    <p class="transcript">Man, I think this is a bit better. Why am I seeing a bit lag? When we are streaming, right? Let us have some loading indicator or next word that is coming. Maybe we can see how to do that.</p>
+    <div class="rule"></div>
+    <div class="actions">
+      <button class="primary">Open transcript</button>
+      <button class="secondary">Generate summary</button>
+      <button class="quiet">Copy</button>
+      <button class="quiet">Record another</button>
+      <span class="spacer"></span>
+      <div class="icon">📁</div>
+    </div>
+  </article>
+  <p class="caption">Clean post-record card · transcript focus · no summary chrome</p>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Muffin — Recordings (unified mock)</title>
+  <style>
+    :root {
+      --bg: #dde7ef;
+      --paper: #fafcfd;
+      --sidebar: #e7eef4;
+      --nav-on: #e2e7de;
+      --ink: #262b33;
+      --body: #3e4650;
+      --muted: #5a6472;
+      --border: #cbd8e2;
+      --olive: #4f5a3c;
+      --olive-tint: #e6eadd;
+      --sky: #e4edf2;
+      --sky-ink: #43678a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 18% 0%, #cfe0ec 0%, transparent 48%),
+        radial-gradient(ellipse at 88% 90%, rgba(79, 90, 60, 0.12) 0%, transparent 42%),
+        var(--bg);
+    }
+
+    .frame {
+      max-width: 1120px;
+      height: min(720px, calc(100vh - 72px));
+      margin: 28px auto 12px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(250, 252, 253, 0.55);
+      box-shadow: 0 16px 40px rgba(38, 43, 51, 0.08);
+    }
+
+    /* Sidebar */
+    aside {
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 8px;
+      font-weight: 600; font-size: 14px;
+    }
+    .mark {
+      width: 26px; height: 26px; border-radius: 5px;
+      background: var(--olive);
+    }
+    nav { display: flex; flex-direction: column; gap: 2px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 10px; border-radius: 6px;
+      font-size: 13px; color: var(--body);
+    }
+    .nav-item .ico { width: 16px; color: var(--muted); font-size: 12px; text-align: center; }
+    .nav-item.on {
+      background: var(--nav-on);
+      color: #4a5232;
+      font-weight: 500;
+      box-shadow: inset 3px 0 0 var(--olive);
+    }
+    .nav-item.on .ico { color: var(--olive); }
+    .nav-hint {
+      margin-top: auto;
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* Main */
+    main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: transparent;
+    }
+
+    /* Recordings list */
+    .list-pane { display: flex; flex-direction: column; height: 100%; }
+    .list-pane.hidden { display: none; }
+    .list-header {
+      padding: 18px 24px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .list-header h1 {
+      margin: 0;
+      font: 600 20px/1.2 "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+    }
+    .list-header p {
+      margin: 4px 0 0;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .list {
+      flex: 1;
+      overflow: auto;
+      padding: 10px 14px 20px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 16px;
+      padding: 12px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .row:hover { background: rgba(250, 252, 253, 0.9); border-color: var(--border); }
+    .row .title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .row .preview {
+      grid-column: 1 / -1;
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .row .meta {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      align-self: start;
+      padding-top: 2px;
+    }
+
+    /* Note detail */
+    .note-pane { display: none; flex-direction: column; height: 100%; }
+    .note-pane.show { display: flex; }
+    .note-top {
+      padding: 14px 24px 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(250, 252, 253, 0.72);
+    }
+    .crumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12.5px;
+      margin-bottom: 10px;
+    }
+    .crumb button {
+      appearance: none;
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--sky-ink);
+      font: 500 12.5px/1 system-ui, sans-serif;
+      cursor: pointer;
+    }
+    .crumb .sep { color: var(--muted); }
+    .crumb .now { color: var(--ink); font-weight: 600; }
+    .note-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .note-title-row h1 {
+      margin: 0;
+      font: 600 18px/1.25 "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+    }
+    .note-title-row .meta {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .tabs {
+      display: flex;
+      gap: 0;
+    }
+    .tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 10px 14px 11px;
+      font: 500 13px/1 system-ui, sans-serif;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .tab.on {
+      color: var(--olive);
+      border-bottom-color: var(--olive);
+    }
+
+    .note-body {
+      flex: 1;
+      overflow: auto;
+      padding: 18px 24px 28px;
+    }
+    .panel { display: none; }
+    .panel.on { display: block; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    button.chip {
+      appearance: none;
+      border-radius: 5px;
+      font: 500 12.5px/1 system-ui, sans-serif;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .primary {
+      background: var(--olive);
+      color: #fff;
+      border: 1px solid var(--olive);
+    }
+    .secondary {
+      background: var(--sky);
+      color: var(--sky-ink);
+      border: 1px solid #b7c9d8;
+    }
+    .quiet {
+      background: var(--paper);
+      color: var(--body);
+      border: 1px solid var(--border);
+    }
+    select.chip {
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--paper);
+      padding: 7px 10px;
+      font: 500 12.5px/1 system-ui, sans-serif;
+      color: var(--body);
+    }
+
+    .doc {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px 24px 28px;
+      box-shadow: 0 8px 20px rgba(38, 43, 51, 0.04);
+      max-width: 720px;
+    }
+    .doc h2 {
+      margin: 0 0 4px;
+      font: 600 20px/1.2 "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+    }
+    .doc .sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .rule { height: 1px; background: var(--border); margin: 0 0 16px; }
+    .doc p, .doc li {
+      font: 400 15.5px/1.6 "Iowan Old Style", "Palatino", "New York", Georgia, serif;
+      color: var(--ink);
+      margin: 0 0 12px;
+    }
+    .doc ul { margin: 0 0 12px; padding-left: 1.2em; }
+    .doc .label {
+      font: 700 10.5px/1 system-ui, sans-serif;
+      letter-spacing: 0.07em;
+      color: var(--olive);
+      margin: 18px 0 8px;
+    }
+
+    .caption {
+      max-width: 1120px;
+      margin: 0 auto 24px;
+      padding: 0 8px;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.5;
+      text-align: center;
+    }
+    .caption strong { color: var(--body); }
+    .name-alts {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .name-alts span {
+      font-size: 11.5px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(250, 252, 253, 0.7);
+    }
+    .name-alts .pick {
+      border-color: #b9c2a6;
+      background: var(--olive-tint);
+      color: var(--olive);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="frame" role="application" aria-label="Muffin Recordings mock">
+    <aside>
+      <div class="brand"><div class="mark" aria-hidden="true"></div>Muffin</div>
+      <nav>
+        <div class="nav-item"><span class="ico">●</span> Record</div>
+        <div class="nav-item on"><span class="ico">☰</span> Recordings</div>
+        <div class="nav-item"><span class="ico">⚙</span> Settings</div>
+      </nav>
+      <div class="nav-hint">
+        One place for your takes.<br>
+        Open a note → switch Transcript / Summary.
+      </div>
+    </aside>
+
+    <main>
+      <!-- LIST -->
+      <section class="list-pane" id="listPane">
+        <div class="list-header">
+          <h1>Recordings</h1>
+          <p>Everything you’ve captured on this Mac — transcript and summary live together.</p>
+        </div>
+        <div class="list" id="list">
+          <div class="row" data-open>
+            <div class="title">Streaming lag and loading indicator</div>
+            <div class="meta">Today · 0m 28s</div>
+            <div class="preview">Man, I think this is a bit better. Why am I seeing a bit lag? When we are streaming…</div>
+          </div>
+          <div class="row" data-open>
+            <div class="title">Standup — blockers and owners</div>
+            <div class="meta">Yesterday · 4m 12s</div>
+            <div class="preview">Let’s walk blockers first. API deploy is waiting on the certificate renewal…</div>
+          </div>
+          <div class="row" data-open>
+            <div class="title">Blog draft — muffin morning ritual</div>
+            <div class="meta">Mon · 9m 03s</div>
+            <div class="preview">The best recordings happen when you’re walking. Capture first, shape later…</div>
+          </div>
+          <div class="row" data-open>
+            <div class="title">Call with design — IA feedback</div>
+            <div class="meta">Aug 24 · 18m 40s</div>
+            <div class="preview">Library, transcript, and summary feel like three apps. Put them in one desk…</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTE DETAIL -->
+      <section class="note-pane" id="notePane">
+        <div class="note-top">
+          <div class="crumb">
+            <button type="button" id="backToList">← Recordings</button>
+            <span class="sep">/</span>
+            <span class="now">Streaming lag and loading indicator</span>
+          </div>
+          <div class="note-title-row">
+            <h1>Streaming lag and loading indicator</h1>
+            <div class="meta">Today · 0m 28s · 40 words</div>
+          </div>
+          <div class="tabs" role="tablist">
+            <button class="tab on" role="tab" aria-selected="true" data-tab="transcript">Transcript</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="summary">Summary</button>
+          </div>
+        </div>
+
+        <div class="note-body">
+          <div class="panel on" id="panel-transcript" role="tabpanel">
+            <div class="toolbar">
+              <button class="chip quiet" type="button">Copy</button>
+              <button class="chip quiet" type="button">Export .txt</button>
+              <button class="chip quiet" type="button">Finder</button>
+            </div>
+            <article class="doc">
+              <h2>Transcript</h2>
+              <div class="sub">Edits autosave to transcript.md</div>
+              <div class="rule"></div>
+              <p>Man, I think this is a bit better. Why am I seeing a bit lag? When we are streaming, right? Let us have some loading indicator or next word that is coming. Maybe we can see how to do that.</p>
+              <p>Also — library, transcript, and summary shouldn’t feel like three separate places. One note surface is enough.</p>
+            </article>
+          </div>
+
+          <div class="panel" id="panel-summary" role="tabpanel">
+            <div class="toolbar">
+              <select class="chip" aria-label="Summary format">
+                <option>Summary</option>
+                <option>Meeting recordings</option>
+                <option>Action items</option>
+                <option>Blog draft</option>
+                <option>Custom</option>
+              </select>
+              <button class="chip primary" type="button">Generate summary</button>
+              <button class="chip quiet" type="button">Copy</button>
+            </div>
+            <article class="doc">
+              <h2>Summary</h2>
+              <div class="sub">Format · Apple Intelligence · from latest transcript</div>
+              <div class="rule"></div>
+              <p>You’re refining the live capture experience: reduce perceived lag while streaming, and add a clearer signal for the next incoming word.</p>
+              <div class="label">KEY POINTS</div>
+              <ul>
+                <li>Streaming feels slightly lagged during live transcription.</li>
+                <li>Want a loading / “next word” indicator while speech is in flight.</li>
+                <li>Prefer one place for library + transcript + summary instead of split tabs.</li>
+              </ul>
+              <div class="label">NEXT</div>
+              <ul>
+                <li>Prototype a subtle incoming-word affordance on Record.</li>
+                <li>Ship unified Recordings with Transcript / Summary tabs.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <p class="caption">
+    <strong>IA:</strong> Sidebar is Record · <strong>Recordings</strong> · Settings.
+    Recordings opens your list; a take opens in-place with <strong>Transcript | Summary</strong> tabs — no separate Library / Transcript / Summary destinations.
+    <br />
+    Naming (pick one later):
+  </p>
+  <div class="name-alts" aria-label="Name options">
+    <span class="pick">Recordings ← mock default</span>
+    <span>Notes</span>
+    <span>Takes</span>
+    <span>Tapes</span>
+    <span>Shelf</span>
+    <span>Desk</span>
+  </div>
+
+  <script>
+    const listPane = document.getElementById('listPane');
+    const notePane = document.getElementById('notePane');
+    const back = document.getElementById('backToList');
+
+    document.querySelectorAll('[data-open]').forEach((row) => {
+      row.addEventListener('click', () => {
+        listPane.classList.add('hidden');
+        notePane.classList.add('show');
+      });
+    });
+
+    back.addEventListener('click', () => {
+      notePane.classList.remove('show');
+      listPane.classList.remove('hidden');
+    });
+
+    document.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach((t) => {
+          t.classList.toggle('on', t === tab);
+          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+        });
+        const id = tab.getAttribute('data-tab');
+        document.querySelectorAll('.panel').forEach((p) => {
+          p.classList.toggle('on', p.id === 'panel-' + id);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
