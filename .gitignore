@@ -1,2 +1,33 @@
+# macOS
 .DS_Store
+**/.DS_Store
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+
+# Swift Package Manager
 Packages/Muffin/.build/
+.build/
+*.resolved
+
+# Superpowers / internal design docs
+docs/superpowers/
+docs/landing-v1.html
+docs/landing-v2.html
+docs/landing-v3.html
+docs/landing.html
+docs/liquid-glass-preview.html
+docs/mockup-home.html
+
+# Claude Code
+.claude/
+
+# Secrets
+.env
+*.pem
