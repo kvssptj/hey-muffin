@@ -57,7 +57,7 @@ public enum NoteTemplate: String, CaseIterable, Identifiable, Sendable, Codable 
 
 // MARK: - OutputTemplate
 
-public struct OutputTemplate: Identifiable, Codable, Sendable, Hashable {
+public struct OutputTemplate: Identifiable, Codable, Sendable, Hashable, Equatable {
     public var id: String
     public var name: String
     public var description: String
@@ -111,16 +111,26 @@ public final class TemplateStore {
     public private(set) var templates: [OutputTemplate]
     public private(set) var defaultTemplateID: String
 
-    private static let defaultIDKey = "muffin.defaultTemplateID"
-    private static let customKey    = "muffin.customTemplates"
+    private static let defaultIDKey        = "muffin.defaultTemplateID"
+    private static let customKey           = "muffin.customTemplates"
+    private static let builtInOverridesKey = "muffin.builtInOverrides"
 
     public init() {
-        var all = OutputTemplate.builtIns
-        if let data = UserDefaults.standard.data(forKey: Self.customKey),
-           let customs = try? JSONDecoder().decode([OutputTemplate].self, from: data) {
-            all += customs
+        // Load any user overrides for built-ins.
+        var builtIns = OutputTemplate.builtIns
+        if let data = UserDefaults.standard.data(forKey: Self.builtInOverridesKey),
+           let overrides = try? JSONDecoder().decode([String: OutputTemplate].self, from: data) {
+            builtIns = builtIns.map { t in overrides[t.id] ?? t }
         }
-        templates = all
+
+        // Load custom templates.
+        var customs: [OutputTemplate] = []
+        if let data = UserDefaults.standard.data(forKey: Self.customKey),
+           let decoded = try? JSONDecoder().decode([OutputTemplate].self, from: data) {
+            customs = decoded
+        }
+
+        templates = builtIns + customs
         defaultTemplateID = UserDefaults.standard.string(forKey: Self.defaultIDKey)
             ?? OutputTemplate.builtIns[0].id
     }
@@ -134,30 +144,48 @@ public final class TemplateStore {
         UserDefaults.standard.set(t.id, forKey: Self.defaultIDKey)
     }
 
+    /// Saves a template (built-in override or custom). Creates if new.
     public func save(_ t: OutputTemplate) {
         if let i = templates.firstIndex(where: { $0.id == t.id }) {
             templates[i] = t
         } else {
             templates.append(t)
         }
-        persistCustom()
+        persistAll()
     }
 
-    public func addNew() -> OutputTemplate {
-        let t = OutputTemplate(
-            id: UUID().uuidString,
-            name: "New template",
-            description: "",
-            prompt: "Summarize the transcript clearly and concisely.",
-            isBuiltIn: false
-        )
-        templates.append(t)
-        persistCustom()
-        return t
+    /// Deletes a custom template. No-op for built-ins.
+    public func delete(id: String) {
+        guard templates.first(where: { $0.id == id })?.isBuiltIn == false else { return }
+        if defaultTemplateID == id {
+            defaultTemplateID = OutputTemplate.builtIns[0].id
+            UserDefaults.standard.set(defaultTemplateID, forKey: Self.defaultIDKey)
+        }
+        templates.removeAll { $0.id == id }
+        persistAll()
     }
 
-    private func persistCustom() {
-        let data = try? JSONEncoder().encode(templates.filter { !$0.isBuiltIn })
-        UserDefaults.standard.set(data, forKey: Self.customKey)
+    /// Restores a built-in template to its factory prompt/name.
+    public func resetToBuiltIn(id: String) {
+        guard let original = OutputTemplate.builtIns.first(where: { $0.id == id }),
+              let i = templates.firstIndex(where: { $0.id == id }) else { return }
+        templates[i] = original
+        persistAll()
+    }
+
+    private func persistAll() {
+        // Custom templates.
+        let customData = try? JSONEncoder().encode(templates.filter { !$0.isBuiltIn })
+        UserDefaults.standard.set(customData, forKey: Self.customKey)
+
+        // Built-in overrides (only those differing from factory defaults).
+        var overrides: [String: OutputTemplate] = [:]
+        for t in templates where t.isBuiltIn {
+            if let original = OutputTemplate.builtIns.first(where: { $0.id == t.id }), t != original {
+                overrides[t.id] = t
+            }
+        }
+        let overridesData = try? JSONEncoder().encode(overrides)
+        UserDefaults.standard.set(overridesData, forKey: Self.builtInOverridesKey)
     }
 }

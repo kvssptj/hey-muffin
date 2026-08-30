@@ -58,17 +58,6 @@ struct SummaryDocumentView: View {
                     .tracking(-0.3)
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 8)
-                if !hideAIIndicator {
-                    HStack(spacing: 6) {
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 11, weight: .regular))
-                        Text(aiLabel.uppercased())
-                            .font(.system(size: 11, weight: .medium))
-                            .tracking(1.4)
-                    }
-                    .foregroundStyle(OrionColor.textMuted)
-                    .padding(.top, 6)
-                }
             }
 
             if let meta, !meta.isEmpty {

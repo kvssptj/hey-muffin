@@ -6,9 +6,24 @@ struct TemplatesView: View {
 
     @State private var selectedID: String = ""
     @State private var draft: OutputTemplate = OutputTemplate.builtIns[0]
+    /// Non-nil when the user clicked "+ New template" but hasn't saved yet.
+    @State private var pendingNew: OutputTemplate? = nil
+    /// ID to return to if the user discards a pending new template.
+    @State private var priorSelectedID: String = ""
+    @State private var confirmingDelete = false
+    @State private var confirmingReset = false
 
-    private var selected: OutputTemplate? {
-        templateStore.templates.first { $0.id == selectedID }
+    private var isDirty: Bool {
+        if pendingNew != nil { return true }
+        guard let saved = templateStore.templates.first(where: { $0.id == draft.id }) else { return false }
+        return draft != saved
+    }
+
+    private var canRestoreBuiltIn: Bool {
+        guard draft.isBuiltIn,
+              let original = OutputTemplate.builtIns.first(where: { $0.id == draft.id }),
+              let saved = templateStore.templates.first(where: { $0.id == draft.id }) else { return false }
+        return saved != original
     }
 
     var body: some View {
@@ -30,9 +45,6 @@ struct TemplatesView: View {
                 select(first)
             }
         }
-        .onChange(of: templateStore.defaultTemplateID) { _, _ in
-            // Refresh draft if the default badge changes
-        }
     }
 
     // MARK: - Left panel
@@ -45,7 +57,7 @@ struct TemplatesView: View {
                     .tracking(0.7)
                     .foregroundStyle(OrionColor.primary)
                 Spacer()
-                Text("\(templateStore.templates.count)")
+                Text("\(templateStore.templates.count + (pendingNew != nil ? 1 : 0))")
                     .font(.system(size: 11, weight: .medium, design: .monospaced))
                     .foregroundStyle(OrionColor.textMuted)
             }
@@ -57,11 +69,15 @@ struct TemplatesView: View {
                 VStack(spacing: 0) {
                     ForEach(templateStore.templates) { template in
                         templateRow(template)
-                        if template.id != templateStore.templates.last?.id {
+                        if template.id != templateStore.templates.last?.id || pendingNew != nil {
                             Rectangle()
                                 .fill(OrionColor.border.opacity(0.7))
                                 .frame(height: 1)
                         }
+                    }
+                    // Unsaved new template row
+                    if let pending = pendingNew {
+                        pendingRow(pending)
                     }
                 }
                 .background(OrionColor.surfacePaper)
@@ -77,8 +93,18 @@ struct TemplatesView: View {
                 .padding(.top, 8)
 
             Button {
-                let t = templateStore.addNew()
-                select(t)
+                guard pendingNew == nil else { return }
+                priorSelectedID = selectedID
+                let t = OutputTemplate(
+                    id: UUID().uuidString,
+                    name: "New template",
+                    description: "",
+                    prompt: "",
+                    isBuiltIn: false
+                )
+                pendingNew = t
+                draft = t
+                selectedID = t.id
             } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "plus")
@@ -90,7 +116,8 @@ struct TemplatesView: View {
                 .padding(.vertical, 9)
             }
             .buttonStyle(.plain)
-            .foregroundStyle(OrionColor.textMuted)
+            .foregroundStyle(pendingNew != nil ? OrionColor.textMuted.opacity(0.4) : OrionColor.textMuted)
+            .disabled(pendingNew != nil)
             .padding(.horizontal, 10)
             .padding(.bottom, 12)
         }
@@ -101,9 +128,15 @@ struct TemplatesView: View {
     private func templateRow(_ template: OutputTemplate) -> some View {
         let isSelected = template.id == selectedID
         let isDefault  = template.id == templateStore.defaultTemplateID
-        Button { select(template) } label: {
+        let isModified = template.isBuiltIn &&
+            OutputTemplate.builtIns.first(where: { $0.id == template.id }) != template
+        Button {
+            if pendingNew != nil {
+                pendingNew = nil
+            }
+            select(template)
+        } label: {
             HStack(spacing: 0) {
-                // Selected indicator
                 Capsule()
                     .fill(isSelected ? OrionColor.primary : Color.clear)
                     .frame(width: 3, height: 16)
@@ -111,11 +144,17 @@ struct TemplatesView: View {
                     .padding(.trailing, 8)
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(template.name)
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(OrionColor.textInk)
-                        .lineLimit(1)
-
+                    HStack(spacing: 4) {
+                        Text(template.name)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(OrionColor.textInk)
+                            .lineLimit(1)
+                        if isModified {
+                            Circle()
+                                .fill(OrionColor.primary.opacity(0.6))
+                                .frame(width: 5, height: 5)
+                        }
+                    }
                     if isDefault {
                         Text("Default")
                             .font(.system(size: 11))
@@ -137,22 +176,50 @@ struct TemplatesView: View {
         .buttonStyle(.plain)
     }
 
+    @ViewBuilder
+    private func pendingRow(_ template: OutputTemplate) -> some View {
+        HStack(spacing: 0) {
+            Capsule()
+                .fill(OrionColor.primary)
+                .frame(width: 3, height: 16)
+                .padding(.leading, 4)
+                .padding(.trailing, 8)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(draft.name.isEmpty ? "New template" : draft.name)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(OrionColor.textInk)
+                    .italic()
+                    .lineLimit(1)
+                Text("Unsaved")
+                    .font(.system(size: 11))
+                    .foregroundStyle(OrionColor.textMuted)
+            }
+            Spacer(minLength: 8)
+        }
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(OrionColor.surfaceNavSelected)
+    }
+
     // MARK: - Right panel
 
     private var rightPanel: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                // Card 1: identity + prompt
                 OrionCard(padding: 20) {
                     VStack(alignment: .leading, spacing: 14) {
                         // Header
                         HStack(alignment: .firstTextBaseline, spacing: 10) {
-                            Text(draft.name)
+                            Text(draft.name.isEmpty ? "New template" : draft.name)
                                 .font(.system(size: 17, weight: .semibold, design: .serif))
                                 .foregroundStyle(OrionColor.textInk)
                             Spacer(minLength: 8)
                             if draft.id == templateStore.defaultTemplateID {
                                 OrionBadge(text: "Default", variant: .olive)
+                            }
+                            if draft.isBuiltIn {
+                                OrionBadge(text: "Built-in", variant: .sky)
                             }
                         }
 
@@ -164,13 +231,14 @@ struct TemplatesView: View {
 
                         OrionEngravedRule()
 
-                        // Name field
                         fieldLabel("Name")
                         TextField("Template name", text: $draft.name)
                             .textFieldStyle(TemplateFieldStyle())
-                            .disabled(draft.isBuiltIn)
 
-                        // Prompt
+                        fieldLabel("Description")
+                        TextField("Short description", text: $draft.description)
+                            .textFieldStyle(TemplateFieldStyle())
+
                         fieldLabel("System prompt")
                         ZStack(alignment: .topLeading) {
                             Text(draft.prompt.isEmpty ? " " : draft.prompt)
@@ -186,41 +254,103 @@ struct TemplatesView: View {
                                 .scrollContentBackground(.hidden)
                                 .scrollDisabled(true)
                                 .lineSpacing(5)
-                                .disabled(draft.isBuiltIn)
                         }
                         .frame(minHeight: 160)
                         .padding(8)
-                        .background(draft.isBuiltIn ? OrionColor.background.opacity(0.5) : Color.white)
+                        .background(Color.white)
                         .overlay(
                             RoundedRectangle(cornerRadius: 6, style: .continuous)
                                 .strokeBorder(OrionColor.border, lineWidth: 1)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
 
-                        if !draft.isBuiltIn {
-                            OrionEngravedRule()
-                            HStack(spacing: 8) {
-                                Spacer(minLength: 0)
-                                Button("Revert") {
-                                    if let original = templateStore.templates.first(where: { $0.id == draft.id }) {
-                                        draft = original
+                        OrionEngravedRule()
+
+                        HStack(spacing: 8) {
+                            // Restore factory defaults (built-ins only, when overridden)
+                            if canRestoreBuiltIn {
+                                Button("Restore defaults") {
+                                    confirmingReset = true
+                                }
+                                .buttonStyle(OrionQuietButtonStyle())
+                                .fixedSize()
+                                .confirmationDialog(
+                                    "Restore \"\(draft.name)\" to factory defaults?",
+                                    isPresented: $confirmingReset,
+                                    titleVisibility: .visible
+                                ) {
+                                    Button("Restore defaults", role: .destructive) {
+                                        templateStore.resetToBuiltIn(id: draft.id)
+                                        if let restored = templateStore.templates.first(where: { $0.id == draft.id }) {
+                                            draft = restored
+                                        }
+                                    }
+                                    Button("Cancel", role: .cancel) {}
+                                } message: {
+                                    Text("Your edits to this template will be lost.")
+                                }
+                            }
+
+                            // Delete (custom templates only)
+                            if !draft.isBuiltIn && pendingNew == nil {
+                                Button("Delete") { confirmingDelete = true }
+                                    .buttonStyle(OrionQuietButtonStyle())
+                                    .foregroundStyle(OrionColor.danger)
+                                    .fixedSize()
+                                    .confirmationDialog(
+                                        "Delete \"\(draft.name)\"?",
+                                        isPresented: $confirmingDelete,
+                                        titleVisibility: .visible
+                                    ) {
+                                        Button("Delete", role: .destructive) {
+                                            let idToDelete = draft.id
+                                            if let first = templateStore.templates.first(where: { $0.id != idToDelete }) {
+                                                select(first)
+                                            }
+                                            templateStore.delete(id: idToDelete)
+                                        }
+                                        Button("Cancel", role: .cancel) {}
+                                    }
+                            }
+
+                            Spacer(minLength: 0)
+
+                            // Discard (new unsaved template)
+                            if pendingNew != nil {
+                                Button("Discard") {
+                                    pendingNew = nil
+                                    if let prior = templateStore.templates.first(where: { $0.id == priorSelectedID })
+                                        ?? templateStore.templates.first {
+                                        select(prior)
                                     }
                                 }
                                 .buttonStyle(OrionQuietButtonStyle())
                                 .fixedSize()
-
-                                Button("Save template") {
-                                    templateStore.save(draft)
+                            } else if isDirty {
+                                // Revert unsaved edits on an existing template
+                                Button("Revert") {
+                                    if let saved = templateStore.templates.first(where: { $0.id == draft.id }) {
+                                        draft = saved
+                                    }
                                 }
-                                .buttonStyle(OrionPrimaryButtonStyle())
+                                .buttonStyle(OrionQuietButtonStyle())
                                 .fixedSize()
                             }
+
+                            Button("Save template") {
+                                templateStore.save(draft)
+                                pendingNew = nil
+                                selectedID = draft.id
+                            }
+                            .buttonStyle(OrionPrimaryButtonStyle())
+                            .fixedSize()
+                            .disabled(!isDirty)
                         }
                     }
                 }
 
-                // Card 2: set as default (only when not already default)
-                if draft.id != templateStore.defaultTemplateID {
+                // Set as default (only when not already default)
+                if draft.id != templateStore.defaultTemplateID && pendingNew == nil {
                     OrionCard(padding: 20) {
                         HStack(alignment: .firstTextBaseline, spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
@@ -262,7 +392,6 @@ struct TemplatesView: View {
     }
 }
 
-// Matches the OrionFieldStyle used in SettingsView
 private struct TemplateFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration

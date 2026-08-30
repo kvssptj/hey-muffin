@@ -24,7 +24,7 @@ struct ContentView: View {
             AppBackgroundLayer()
                 .ignoresSafeArea()
         }
-        .onReceive(NotificationCenter.default.publisher(for: .orionNewRecording)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .muffinNewRecording)) { _ in
             destination = .newRecording
         }
         .onReceive(NotificationCenter.default.publisher(for: .muffinFnPushBegan)) { _ in

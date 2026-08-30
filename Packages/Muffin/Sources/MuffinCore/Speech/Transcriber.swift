@@ -100,7 +100,7 @@ public final class Transcriber {
                 for try await result in transcriber.results {
                     let text = String(result.text.characters)
                         .trimmingCharacters(in: .whitespacesAndNewlines)
-                    let attributed = AttributedString(result.text)
+                    let attributed = result.text
                     if result.isFinal {
                         if !text.isEmpty {
                             let separator = finalized.isEmpty ? AttributedString() : AttributedString(" ")

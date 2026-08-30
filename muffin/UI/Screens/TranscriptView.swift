@@ -23,7 +23,7 @@ struct TranscriptView: View {
                     systemImage: "doc.plaintext",
                     actionTitle: "Start recording",
                     action: {
-                        NotificationCenter.default.post(name: .orionNewRecording, object: nil)
+                        NotificationCenter.default.post(name: .muffinNewRecording, object: nil)
                     }
                 )
             } else {
@@ -63,11 +63,6 @@ struct TranscriptView: View {
                                     }
                                 }
                                 .buttonStyle(OrionQuietButtonStyle())
-
-                                if let onOpenSummary {
-                                    Button("Summary") { onOpenSummary() }
-                                        .buttonStyle(OrionQuietButtonStyle())
-                                }
 
                                 Menu {
                                     Button("Show folder in Finder") { try? session.revealInFinder(item: .folder) }

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muffin — Your thoughts, yours to own</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #DDE7EF;
+  --paper:        #FAFCFD;
+  --sidebar:      #E7EEF4;
+  --border:       #CBD8E2;
+  --ink:          #262B33;
+  --body:         #3E4650;
+  --muted:        #5A6472;
+  --primary:      #4F5A3C;
+  --primary-hover:#3E472E;
+  --primary-tint: #E6EADD;
+  --secondary:    #43678A;
+  --secondary-tint:#E4EDF2;
+  --success:      #4F6242;
+  --success-tint: #E5EBE1;
+  --h: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --m: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* glass — dark enough for white text to read cleanly */
+  --glass-bg:     rgba(8, 22, 44, 0.62);
+  --glass-bg-dark:rgba(4, 14, 28, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.30);
+  --glass-blur:   blur(32px) saturate(160%);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--m);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ───────────────────────────────────────────────────── */
+nav {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 56px;
+}
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.nav-wordmark {
+  font-family: var(--h); font-size: 18px; font-weight: 600;
+  letter-spacing: -.026em; color: #fff;
+  text-shadow: 0 1px 8px rgba(0,0,0,.4);
+}
+
+.nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
+.nav-links a {
+  font-family: var(--h); font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,.88); text-decoration: none;
+  text-shadow: 0 1px 6px rgba(0,0,0,.35);
+  transition: color .15s;
+}
+.nav-links a:hover { color: #fff; }
+
+.nav-cta {
+  font-family: var(--h); font-size: 13px; font-weight: 600;
+  letter-spacing: -.01em; padding: 8px 20px;
+  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.30);
+  border-radius: 8px; color: #fff; text-decoration: none;
+  backdrop-filter: blur(12px);
+  transition: background .15s;
+}
+.nav-cta:hover { background: rgba(255,255,255,.26); }
+
+/* ── HERO ───────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  overflow: hidden; background: #0F1E30;
+  padding-bottom: 80px;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('bg-mountain.png');
+  background-size: cover; background-position: center 70%;
+}
+
+/* top scrim */
+.hero-bg::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 14, 26, 0.75) 0%,
+    rgba(5, 14, 26, 0.35) 38%,
+    transparent 58%
+  );
+  pointer-events: none;
+}
+
+/* bottom fade */
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent           38%,
+    rgba(5, 14, 26, 0.60) 70%,
+    rgba(5, 14, 26, 0.92) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 80px 24px 0;
+  width: 100%;
+}
+
+/* badge */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--m); font-size: 11px; letter-spacing: .09em;
+  color: rgba(255,255,255,.80); background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.22); border-radius: 99px;
+  padding: 5px 15px; margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #80D97A; flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(128,217,122,.7);
+  animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.25; } }
+
+/* headline — strong white, subtle text-shadow for depth */
+.hero-h1 {
+  font-family: var(--h);
+  font-size: clamp(46px, 7.5vw, 78px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1.02;
+  color: #fff;
+  text-shadow: 0 2px 24px rgba(0,0,0,.5);
+  margin-bottom: 20px;
+}
+
+.hero-sub {
+  font-family: var(--h);
+  font-size: clamp(16px, 2.2vw, 20px);
+  font-weight: 400;
+  color: #fff;
+  max-width: 510px;
+  line-height: 1.52;
+  letter-spacing: -.014em;
+  text-shadow: 0 1px 14px rgba(0,0,0,.65);
+  margin-bottom: 36px;
+}
+
+.hero-ctas { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; }
+
+.btn-primary {
+  font-family: var(--h); font-size: 16px; font-weight: 600; letter-spacing: -.022em;
+  padding: 14px 32px; background: var(--primary); color: #fff;
+  border-radius: 10px; text-decoration: none;
+  border: 1px solid rgba(0,0,0,.18);
+  box-shadow: 0 2px 12px rgba(0,0,0,.30), 0 0 0 1px rgba(255,255,255,.08) inset;
+  transition: background .15s, transform .1s;
+}
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+.btn-text {
+  font-family: var(--h); font-size: 15px; font-weight: 500;
+  color: rgba(255,255,255,.82); text-decoration: none;
+  text-shadow: 0 1px 8px rgba(0,0,0,.4);
+  transition: color .15s;
+}
+.btn-text:hover { color: #fff; }
+
+/* ── FROSTED GLASS RECORDING CARD ──────────────────────────── */
+.card-wrap {
+  position: relative; z-index: 10;
+  width: 100%; max-width: 600px; padding: 0 24px;
+}
+
+.rec-card {
+  border-radius: 16px; overflow: hidden;
+  /* frosted glass */
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,.12) inset,
+    0 8px 32px rgba(0,0,0,.22),
+    0 48px 96px rgba(0,0,0,.42);
+}
+
+/* titlebar */
+.rc-titlebar {
+  display: flex; align-items: center;
+  height: 42px; padding: 0 16px;
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.tl-group { display: flex; gap: 7px; }
+.tl { width: 12px; height: 12px; border-radius: 50%; }
+.tl-r { background: #FF5F57; box-shadow: 0 0 6px rgba(255,95,87,.5); }
+.tl-y { background: #FFBD2E; box-shadow: 0 0 6px rgba(255,189,46,.4); }
+.tl-g { background: #28C840; box-shadow: 0 0 6px rgba(40,200,64,.4); }
+
+.rc-filename {
+  flex: 1; text-align: center;
+  font-family: var(--h); font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,.90); letter-spacing: -.012em;
+  transition: opacity .35s ease;
+}
+
+/* card body */
+.rc-body { padding: 26px 28px 28px; }
+
+.rc-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.rc-label {
+  font-family: var(--h); font-size: 18px; font-weight: 600;
+  color: #fff; letter-spacing: -.024em; margin-bottom: 4px;
+  text-shadow: 0 1px 8px rgba(0,0,0,.5);
+}
+
+.rc-timer {
+  font-family: var(--m); font-size: 13px; letter-spacing: .06em;
+  color: rgba(255,255,255,.72);
+  text-shadow: 0 1px 6px rgba(0,0,0,.4);
+}
+
+/* recording indicator — design system pulsing dot + label */
+.rec-indicator {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(140, 58, 44, 0.28);
+  border: 1px solid rgba(255, 100, 80, 0.30);
+  border-radius: 8px; padding: 7px 12px;
+  backdrop-filter: blur(6px);
+}
+
+.rec-ind-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #FF6055;
+  box-shadow: 0 0 8px rgba(255, 96, 85, 0.80);
+  animation: rec-pulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+}
+
+.rec-ind-label {
+  font-family: var(--m); font-size: 11px; font-weight: 500;
+  letter-spacing: .08em; color: rgba(255,255,255,.85);
+}
+
+/* ── waveform ─────────── */
+.rc-waveform {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; height: 72px; margin-bottom: 24px;
+}
+.wf {
+  width: 4px; border-radius: 3px;
+  /* white bars — the "icy" look */
+  background: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(180,218,255,.70) 100%);
+}
+
+/* transcript — fixed height so the card never reflowes */
+.rc-transcript {
+  font-family: var(--m); font-size: 13.5px;
+  color: #fff; line-height: 1.72;
+  height: 92px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,.14);
+  padding-top: 18px;
+  transition: opacity .35s ease;
+  text-shadow: 0 1px 6px rgba(0,0,0,.5);
+}
+
+.cursor {
+  display: inline-block; width: 2px; height: 14px;
+  background: rgba(255,255,255,.80); margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cur .85s step-end infinite;
+}
+@keyframes cur { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+/* ── 3 feature pills ────────────────────────────────────────── */
+.hero-pills {
+  position: relative; z-index: 10;
+  display: flex; justify-content: center;
+  padding: 44px 24px 68px;
+  width: 100%; max-width: 600px;
+  gap: 0;
+}
+.pill {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 8px; padding: 18px 14px; text-align: center;
+}
+.pill-icon { font-size: 22px; margin-bottom: 2px; }
+.pill-title {
+  font-family: var(--h); font-size: 13.5px; font-weight: 600;
+  color: #fff; letter-spacing: -.016em;
+  text-shadow: 0 1px 8px rgba(0,0,0,.4);
+}
+.pill-desc {
+  font-family: var(--m); font-size: 11.5px;
+  color: rgba(255,255,255,.68); line-height: 1.55;
+  text-shadow: 0 1px 6px rgba(0,0,0,.3);
+}
+
+/* ── SECTIONS ────────────────────────────────────────────────── */
+hr.divider { border: none; border-top: 1px solid var(--border); }
+
+.section { padding: 88px 56px; max-width: 980px; margin: 0 auto; }
+
+.section-label {
+  font-family: var(--m); font-size: 11px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--primary); margin-bottom: 14px;
+}
+/* secondary variant for MCP/CLI and Privacy sections */
+.section-label.blue { color: var(--secondary); }
+
+/* olive section */
+.section-olive { background: var(--sidebar); max-width: 100%; padding: 0 0 88px; }
+.section-olive > * { max-width: 980px; margin: 0 auto; padding: 0 56px; }
+.section-olive .section-label { padding-top: 88px; }
+.section-olive .sh { color: var(--ink); }
+.section-olive .sbody { color: var(--body); max-width: 560px; padding-bottom: 0; }
+.section-olive .feat-grid { padding: 0; margin: 40px auto 0; max-width: calc(980px - 112px); }
+
+h2.sh {
+  font-family: var(--h); font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700; letter-spacing: -.034em; line-height: 1.08;
+  color: var(--ink); margin-bottom: 18px;
+}
+
+.sbody {
+  font-family: var(--m); font-size: 13.5px; color: var(--body);
+  line-height: 1.78; max-width: 560px;
+}
+
+.sbody + .sbody { margin-top: 14px; }
+
+.bg-paper   { background: var(--paper); }
+.bg-sidebar { background: var(--sidebar); }
+
+code.ic {
+  font-family: var(--m); font-size: 12px;
+  background: var(--primary-tint); color: var(--primary);
+  border-radius: 3px; padding: 1px 5px;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 40px; }
+
+/* compare block */
+.compare-wrap { background: #1B242E; border-radius: 10px; overflow: hidden; }
+.compare-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,.08); }
+.c-tab {
+  font-family: var(--m); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; padding: 11px 20px; color: rgba(255,255,255,.38);
+}
+.c-tab.active { color: rgba(255,255,255,.90); border-bottom: 2px solid var(--secondary); }
+.compare-code { padding: 22px 24px; }
+.compare-code pre { font-family: var(--m); font-size: 12.5px; color: #B8CDD8; line-height: 1.75; }
+
+.cb { background: #1B242E; border-radius: 8px; padding: 22px 24px; }
+.cb pre { font-family: var(--m); font-size: 12.5px; color: #B8CDD8; line-height: 1.7; }
+.cm { color: #4E6775; } .st { color: #98C79A; } .kw { color: #7EA8C8; }
+
+/* feature grid */
+.feat-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+  margin-top: 40px; margin-bottom: 0;
+}
+.fc {
+  background: var(--paper); padding: 28px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.fc:nth-child(3n) { border-right: none; }
+.fc:nth-last-child(-n+3) { border-bottom: none; }
+.fc-icon { display: none; }
+.fc-title {
+  font-family: var(--h); font-size: 14px; font-weight: 600;
+  color: var(--ink); letter-spacing: -.018em; line-height: 1.25;
+}
+.fc-body {
+  font-family: var(--m); font-size: 12.5px; color: var(--muted);
+  line-height: 1.65; flex: 1;
+}
+.fc-link {
+  font-family: var(--m); font-size: 12px;
+  color: var(--muted); text-decoration: none; margin-top: 6px;
+}
+.fc-link:hover { color: var(--ink); }
+
+/* anti-pitch */
+.antipitch-list {
+  list-style: none; padding: 0; margin: 32px 0 28px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.antipitch-list li {
+  font-family: var(--m); font-size: 14px; color: var(--ink);
+  line-height: 1.5; padding-left: 20px; position: relative;
+}
+.antipitch-list li::before {
+  content: '✕'; position: absolute; left: 0;
+  color: var(--muted); font-size: 11px; top: 2px;
+}
+.antipitch-cta {
+  font-family: var(--m); font-size: 14px; color: var(--body);
+  line-height: 1.75; max-width: 580px; margin-top: 0;
+}
+.antipitch-alt {
+  font-style: italic; color: var(--muted);
+}
+
+/* FAQ flat */
+.faq-flat { margin-top: 40px; display: flex; flex-direction: column; gap: 2px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.fq { background: var(--paper); padding: 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+.fq-q { font-family: var(--h); font-size: 14px; font-weight: 500; letter-spacing: -.015em; color: var(--ink); line-height: 1.3; }
+.fq-a { font-family: var(--m); font-size: 13px; color: var(--body); line-height: 1.75; max-width: 640px; }
+
+/* CTA band */
+.cta-band { background: var(--primary); padding: 96px 56px; text-align: center; }
+.cta-band h2 { font-family: var(--h); font-size: clamp(28px, 4.5vw, 48px); font-weight: 700; letter-spacing: -.034em; color: #fff; margin-bottom: 16px; }
+.cta-band p { font-family: var(--m); font-size: 13.5px; color: rgba(255,255,255,.70); max-width: 420px; margin: 0 auto 36px; line-height: 1.70; }
+.btn-ivory { display: inline-flex; font-family: var(--h); font-size: 16px; font-weight: 600; letter-spacing: -.022em; padding: 14px 32px; background: var(--paper); color: var(--primary); border-radius: 10px; text-decoration: none; box-shadow: 0 2px 12px rgba(0,0,0,.2); transition: background .15s, transform .1s; }
+.btn-ivory:hover { background: var(--primary-tint); transform: translateY(-1px); }
+
+/* footer */
+footer { background: var(--ink); padding: 52px 56px 0; }
+.fi { max-width: 980px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; padding-bottom: 40px; }
+.fb-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+.fb-logo img { width: 24px; height: 24px; border-radius: 6px; }
+.fb-name { font-family: var(--h); font-size: 15px; font-weight: 600; letter-spacing: -.022em; color: #fff; }
+.fb-tag { font-family: var(--m); font-size: 11.5px; color: rgba(255,255,255,.60); line-height: 1.6; max-width: 230px; }
+.fcols { display: flex; gap: 60px; }
+.fct { font-family: var(--h); font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 14px; }
+.flinks { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.flinks a { font-family: var(--m); font-size: 12.5px; color: rgba(255,255,255,.75); text-decoration: none; transition: color .15s; }
+.flinks a:hover { color: #fff; }
+.fcopy { max-width: 980px; margin: 0 auto; padding: 20px 0; border-top: 1px solid rgba(255,255,255,.12); font-family: var(--m); font-size: 11px; color: rgba(255,255,255,.50); display: flex; justify-content: space-between; }
+
+/* ── SETUP SECTION (MCP + CLI) ─────────────────────────── */
+.setup-section {
+  padding: 88px 0;
+  border-top: 1px solid var(--border);
+  background: var(--paper);
+}
+.setup-wrap { max-width: 920px; margin: 0 auto; padding: 0 52px; }
+
+.setup-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;
+}
+
+.setup-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; background: var(--paper);
+  box-shadow: 0 1px 4px rgba(20,20,20,.04);
+}
+
+.sc-head {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-family: var(--h); font-size: 11px; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+  background: var(--sidebar);
+}
+
+.sc-body { padding: 20px; }
+.sc-body > p {
+  font-family: var(--m); font-size: 13px; color: var(--muted);
+  line-height: 1.65; margin: 0 0 16px;
+}
+
+.sc-body pre {
+  background: var(--ink); color: #D8E4EE;
+  font-family: var(--m); font-size: 12px; line-height: 1.75;
+  padding: 16px 18px; border-radius: 6px;
+  margin: 0 0 12px; overflow-x: auto;
+  white-space: pre;
+}
+.sc-key  { color: #8FB0CC; }
+.sc-val  { color: #98C47A; }
+.sc-cmt  { color: #6A7E6A; }
+
+.copy-row { display: flex; justify-content: flex-end; }
+.copy-btn {
+  font-family: var(--h); font-size: 11px; font-weight: 500;
+  color: var(--muted); background: transparent;
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 5px 12px; cursor: pointer; letter-spacing: -.01em;
+  transition: border-color .15s, color .15s;
+}
+.copy-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+
+/* ── BUILT ON ──────────────────────────────────────────── */
+.built-on {
+  padding: 40px 0; border-top: 1px solid var(--border);
+  text-align: center; background: var(--paper);
+}
+.built-on-label {
+  font-family: var(--m); font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+}
+.built-on-row {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 20px 40px; font-family: var(--h); font-size: 13.5px;
+  font-weight: 500; color: var(--muted);
+}
+.built-on-row span { white-space: nowrap; }
+
+@media (max-width: 740px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero-content { padding: 110px 20px 0; }
+  .card-wrap { padding: 0 16px; }
+  .hero-pills { flex-direction: column; align-items: center; padding-bottom: 48px; }
+  .section { padding: 64px 24px; }
+  .two-col { grid-template-columns: 1fr; gap: 28px; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .fi { flex-direction: column; }
+  .fcols { gap: 28px; flex-wrap: wrap; }
+  footer { padding: 48px 24px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="../Orion/Assets.xcassets/AppIcon.appiconset/icon_256.png" alt="Muffin">
+    <span class="nav-wordmark">Muffin</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#why">Why</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#mcp">MCP + CLI</a></li>
+    <li><a href="#not-for">Not for everyone</a></li>
+  </ul>
+  <a href="https://github.com/kvssptj/orion" class="nav-cta" target="_blank" rel="noopener">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" style="display:inline-block;vertical-align:-.15em;margin-right:6px" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>View on GitHub
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <h1 class="hero-h1">Your thoughts.<br>Yours to own.</h1>
+    <p class="hero-sub">Muffin transcribes your voice directly on your Mac. No cloud uploads. No proprietary databases. Just plain files on your hard drive.</p>
+    <div class="hero-ctas">
+      <a href="#download" class="btn-primary">Download for macOS →</a>
+      <a href="#why" class="btn-text">See how it works →</a>
+    </div>
+  </div>
+
+  <!-- Frosted Glass Recording Card -->
+  <div class="card-wrap">
+    <div class="rec-card">
+      <div class="rc-titlebar">
+        <div class="tl-group">
+          <div class="tl tl-r"></div>
+          <div class="tl tl-y"></div>
+          <div class="tl tl-g"></div>
+        </div>
+        <div class="rc-filename" id="rc-filename">Daily To-do List.md</div>
+      </div>
+      <div class="rc-body">
+        <div class="rc-top">
+          <div>
+            <div class="rc-label">Recording...</div>
+            <div class="rc-timer" id="rc-timer">00:00:00</div>
+          </div>
+          <div class="rec-indicator">
+            <div class="rec-ind-dot"></div>
+            <span class="rec-ind-label">REC</span>
+          </div>
+        </div>
+        <div class="rc-waveform" id="rc-waveform"></div>
+        <div class="rc-transcript" id="rc-transcript"></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<hr class="divider">
+
+<!-- WHY -->
+<section id="why" class="section bg-paper" style="max-width:100%;padding:0;">
+<div class="section" style="padding-top:88px;padding-bottom:88px;">
+  <div class="section-label">Why Muffin</div>
+  <h2 class="sh">I like software that gets<br>out of the way.</h2>
+  <p class="sbody">Most voice tools work like this: you talk, your audio goes to their servers, your transcript lives in their database. If you want your data back, you hope they built an export button. If they shut down, your notes go with them.</p>
+  <p class="sbody" style="margin-top:14px">Muffin works from the opposite rule. Your audio is a file on your Mac. Your transcript is a <code class="ic">.txt</code> or <code class="ic">.md</code> file in a folder you can open right now in Finder. No account. No proprietary format. If Muffin disappears tomorrow, your notes stay exactly where they are.</p>
+  <p class="sbody" style="margin-top:20px;color:var(--primary);font-family:var(--h);font-size:15px;font-weight:600;letter-spacing:-.02em">No subscriptions. You own it forever.</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- FEATURES -->
+<section id="features" class="section section-olive">
+  <div class="section-label">Features</div>
+  <h2 class="sh">Everything you need.<br>Nothing you don't.</h2>
+  <div class="feat-grid">
+
+    <div class="fc">
+      <div class="fc-title">Local audio recording</div>
+      <div class="fc-body">AVAudioEngine captures mic input straight to <code class="ic">audio.caf</code>. Start, stop, pause, add a marker — no cloud upload, ever.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">On-device transcription</div>
+      <div class="fc-body">SpeechAnalyzer writes <code class="ic">transcript.md</code> the moment you stop. Watch words appear live as you speak — no network call, ever.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">Confidence highlighting</div>
+      <div class="fc-body">Low-confidence words are highlighted in the live transcript so you can catch mis-heard names or jargon before saving.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">Auto-save &amp; auto-copy</div>
+      <div class="fc-body">Transcript is saved to disk and copied to your clipboard the moment recording stops — ready to paste anywhere without lifting a finger.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">Menu bar access</div>
+      <div class="fc-body">Start a recording from the menu bar without launching the full app. One click, done. The app stays out of your way.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">Bring your own model</div>
+      <div class="fc-body">Defaults to Apple Intelligence on-device. Or bring your own key — OpenRouter, Ollama, whatever you run.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">Editable transcripts</div>
+      <div class="fc-body">Fix a mis-heard name, restructure a paragraph. Edits write back to the source <code class="ic">.md</code> file directly.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">CLI for scripting</div>
+      <div class="fc-body"><code class="ic">muffin list</code>, <code class="ic">muffin transcript</code>, <code class="ic">muffin generate</code> — reads the same folder the app writes to.</div>
+    </div>
+
+    <div class="fc">
+      <div class="fc-title">MCP server for agents</div>
+      <div class="fc-body">Five stdio tools, no auth. Claude Desktop (or any MCP client) can list, read, edit, and summarize directly.</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MCP + CLI -->
+<section id="mcp" class="setup-section">
+  <div class="setup-wrap">
+    <div class="section-label blue" style="text-align:center;margin-bottom:14px">MCP + CLI</div>
+    <h2 class="sh" style="text-align:center;max-width:22ch;margin:0 auto 14px">Loved by shell scripts,<br>built for agents.</h2>
+    <p class="sbody" style="text-align:center;margin:0 auto 48px;max-width:52ch">Set up the CLI or point an MCP client at Muffin in under five minutes. No console, no API key to generate first.</p>
+
+    <div class="setup-grid">
+
+      <div class="setup-card">
+        <div class="sc-head">Set up the CLI</div>
+        <div class="sc-body">
+          <p>Reads and writes the same folder the app uses — nothing to sync, nothing to configure.</p>
+          <pre><span class="sc-cmt">$ brew install --cask muffin</span>
+<span class="sc-cmt">$ muffin list</span>
+ID        TITLE              DATE         DUR
+a1b2c3d4  Daily To-do List   2026-08-30   04:51
+e5f6g7h8  Product Ideas      2026-08-28   12:33
+
+<span class="sc-cmt">$ muffin transcript a1b2c3d4 --format txt</span></pre>
+          <div class="copy-row">
+            <button class="copy-btn" onclick="navigator.clipboard.writeText('muffin transcript a1b2c3d4 --format txt')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="setup-card">
+        <div class="sc-head">Connect the MCP server</div>
+        <div class="sc-body">
+          <p>Add <code class="ic">muffin-mcp</code> to your MCP client's config. Five tools, local stdio, no auth required.</p>
+          <pre>{
+  <span class="sc-key">"mcpServers"</span>: {
+    <span class="sc-key">"muffin"</span>: {
+      <span class="sc-key">"command"</span>: <span class="sc-val">"/usr/local/bin/muffin-mcp"</span>
+    }
+  }
+}
+<span class="sc-cmt">// list · get · edit · generate · search</span></pre>
+          <div class="copy-row">
+            <button class="copy-btn" onclick="navigator.clipboard.writeText('/usr/local/bin/muffin-mcp')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Built on -->
+<div class="built-on">
+  <div class="setup-wrap">
+    <p class="built-on-label">Built on</p>
+    <div class="built-on-row">
+      <span>Apple SpeechAnalyzer</span>
+      <span>AVFoundation</span>
+      <span>Swift &amp; SwiftUI</span>
+      <span>Model Context Protocol</span>
+      <span>OpenRouter</span>
+      <span>Ollama</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ANTI-PITCH -->
+<section id="not-for" class="section">
+  <div class="section-label">The honest pitch</div>
+  <h2 class="sh">Who this is<br>not for.</h2>
+  <p class="sbody">Let's be clear about what Muffin doesn't do.</p>
+  <ul class="antipitch-list">
+    <li>There is no iPhone app.</li>
+    <li>There is no cloud sync between devices.</li>
+    <li>There is no team calendar integration or automatic meeting bot.</li>
+  </ul>
+  <p class="antipitch-cta">If you want an all-in-one corporate meeting suite, buy <span class="antipitch-alt">Granola</span> or <span class="antipitch-alt">Wisprflow</span> or <span class="antipitch-alt">Monologue</span>.<br>If you want a lightweight, local Mac tool that respects your disk and your privacy, you'll love Muffin.</p>
+</section>
+
+<hr class="divider">
+
+<!-- FAQ -->
+<section id="faq" class="section bg-paper" style="max-width:100%;padding:0;">
+<div class="section" style="padding-top:88px;padding-bottom:88px;">
+  <div class="section-label">FAQ</div>
+  <h2 class="sh">Common questions.<br>Answered plainly.</h2>
+  <div class="faq-flat">
+    <div class="fq">
+      <div class="fq-q">Does it work on my phone, or sync across devices?</div>
+      <div class="fq-a">No. Muffin is Mac-only, single-device, on purpose. That's not a roadmap gap — it's the whole point.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">Any speaker diarization? Calendar auto-join? A bot that joins my calls?</div>
+      <div class="fq-a">No, no, and no. Muffin records what your Mac's mic picks up, manually started. We didn't forget to build a meeting bot — we chose not to.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">Do you train on my recordings or see my transcripts?</div>
+      <div class="fq-a">Transcription runs on your Mac. The summary step talks to whichever provider you configured — your key, your bill, your data.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">Is there a subscription?</div>
+      <div class="fq-a">No. Local recording and transcription are free. The AI summary step is $0 if you use the default Apple Intelligence provider — it runs entirely on your Mac. If you switch to OpenRouter or another cloud provider, you pay whatever they charge.</div>
+    </div>
+    <div class="fq">
+      <div class="fq-q">What if I'm on macOS 25 or earlier?</div>
+      <div class="fq-a">Muffin won't run — SpeechAnalyzer requires macOS 26 (Tahoe). No bundled fallback ASR yet.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-band" id="download">
+  <h2>Start recording in 60 seconds.</h2>
+  <p>Install, grant two permissions, hit record. Everything after that is a folder you already know how to read.</p>
+  <a href="#" class="btn-ivory">Download for macOS →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div>
+      <div class="fb-logo">
+        <img src="../Orion/Assets.xcassets/AppIcon.appiconset/icon_256.png" alt="Muffin">
+        <span class="fb-name">Muffin</span>
+      </div>
+      <p class="fb-tag">Recorded locally, transcribed on-device, stored as files. macOS only.</p>
+    </div>
+    <div class="fcols">
+      <div>
+        <div class="fct">Product</div>
+        <ul class="flinks">
+          <li><a href="#why">Why Muffin</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#not-for">Not for everyone</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fct">Developers</div>
+        <ul class="flinks">
+          <li><a href="#">CLI reference</a></li>
+          <li><a href="#">MCP tools</a></li>
+          <li><a href="#">Quickstart</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fct">Requirements</div>
+        <ul class="flinks">
+          <li><a href="#">macOS 26+</a></li>
+          <li><a href="#">No account needed</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="fcopy">
+    <span>© 2026 Muffin — No telemetry · No account · Files, not a DB</span>
+    <span>Built on macOS, for macOS</span>
+  </div>
+</footer>
+
+<script>
+const scenarios = [
+  {
+    file: 'Daily To-do List.md',
+    text: 'Call the contractor about the bathroom tile, pick up coffee beans on the way home, and finish that budget spreadsheet before the 5 o\'clock deadline.'
+  },
+  {
+    file: 'Product Ideas.md',
+    text: 'What if we added spatial audio to the recording? Could help with speaker separation later on. Also a one-click export to Obsidian would be huge for people already in that workflow.'
+  },
+  {
+    file: 'Weekly Review.md',
+    text: 'Shipped the redesign on Thursday, which felt good. Next week: follow up with the design contractor, prep the Q3 roadmap slides, and finally clear that backlog of support tickets.'
+  }
+];
+
+// Build waveform — mountain-bell profile, icy white bars
+const wfEl = document.getElementById('rc-waveform');
+const N = 36;
+const bars = [];
+for (let i = 0; i < N; i++) {
+  const b = document.createElement('div');
+  b.className = 'wf';
+  const center = N / 2;
+  const dist = Math.abs(i - center) / center;
+  const base = Math.max(8, 97 - dist * dist * 88);
+  b.style.height = base + '%';
+  wfEl.appendChild(b);
+  bars.push({ el: b, base });
+}
+
+function animateWaveform() {
+  bars.forEach(b => {
+    const v = (Math.random() - .5) * 42;
+    const h = Math.max(6, Math.min(100, b.base + v));
+    b.el.style.height = h + '%';
+    b.el.style.transition = 'height ' + (100 + Math.random() * 200) + 'ms ease';
+  });
+}
+setInterval(animateWaveform, 140);
+
+// Timer
+let sec = 0;
+setInterval(() => {
+  sec++;
+  const fmt = n => String(n).padStart(2, '0');
+  document.getElementById('rc-timer').textContent =
+    fmt(Math.floor(sec / 3600)) + ':' + fmt(Math.floor((sec % 3600) / 60)) + ':' + fmt(sec % 60);
+}, 1000);
+
+// Cycling typewriter
+let sIdx = 0, cIdx = 0, tiv = null;
+const filenameEl  = document.getElementById('rc-filename');
+const transcriptEl = document.getElementById('rc-transcript');
+
+function showScenario(idx) {
+  const s = scenarios[idx];
+  filenameEl.style.opacity = '0';
+  transcriptEl.style.opacity = '0';
+  setTimeout(() => {
+    filenameEl.textContent = s.file;
+    transcriptEl.innerHTML = '';
+    filenameEl.style.opacity = '1';
+    transcriptEl.style.opacity = '1';
+    cIdx = 0;
+    if (tiv) clearInterval(tiv);
+    tiv = setInterval(() => {
+      cIdx = Math.min(cIdx + 3, s.text.length);
+      transcriptEl.innerHTML = s.text.slice(0, cIdx) + '<span class="cursor"></span>';
+      if (cIdx >= s.text.length) clearInterval(tiv);
+    }, 38);
+  }, 380);
+}
+
+showScenario(0);
+setInterval(() => {
+  sIdx = (sIdx + 1) % scenarios.length;
+  showScenario(sIdx);
+}, 8500);
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@ import MuffinCore
 import SwiftUI
 
 @main
-struct OrionApp: App {
+struct MuffinApp: App {
     @State private var model = AppModel()
 
     var body: some Scene {
@@ -26,7 +26,7 @@ struct OrionApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("Start recording") {
-                    NotificationCenter.default.post(name: .orionNewRecording, object: nil)
+                    NotificationCenter.default.post(name: .muffinNewRecording, object: nil)
                     model.session.toggleRecording()
                 }
                 .keyboardShortcut("n", modifiers: .command)
@@ -45,5 +45,5 @@ struct OrionApp: App {
 }
 
 extension Notification.Name {
-    static let orionNewRecording = Notification.Name("orionNewRecording")
+    static let muffinNewRecording = Notification.Name("muffinNewRecording")
 }

@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2A570766CCEF4C87883B8C08"
                BuildableName = "Muffin.app"
-               BlueprintName = "Orion"
-               ReferencedContainer = "container:Orion.xcodeproj">
+               BlueprintName = "muffin"
+               ReferencedContainer = "container:muffin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,8 +45,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2A570766CCEF4C87883B8C08"
             BuildableName = "Muffin.app"
-            BlueprintName = "Orion"
-            ReferencedContainer = "container:Orion.xcodeproj">
+            BlueprintName = "muffin"
+            ReferencedContainer = "container:muffin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,8 +62,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2A570766CCEF4C87883B8C08"
             BuildableName = "Muffin.app"
-            BlueprintName = "Orion"
-            ReferencedContainer = "container:Orion.xcodeproj">
+            BlueprintName = "muffin"
+            ReferencedContainer = "container:muffin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -68,18 +68,6 @@ struct SettingsView: View {
                 }
 
                 settingsSection(
-                    title: "Transcription",
-                    blurb: "Speech stays on-device via SpeechAnalyzer."
-                ) {
-                    Text(session.speechReady
-                         ? "SpeechAnalyzer is ready."
-                         : session.statusMessage)
-                        .font(OrionType.body)
-                        .foregroundStyle(OrionColor.textInk)
-                    caption("Requires macOS 26+ and a supported system language. First launch may download a speech model.")
-                }
-
-                settingsSection(
                     title: "Hold Fn to record",
                     blurb: "Push-to-talk from anywhere on your Mac. Release Fn to stop, chime, and copy the transcript."
                 ) {

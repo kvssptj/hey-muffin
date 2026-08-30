@@ -23,7 +23,7 @@ struct SummaryView: View {
                     systemImage: "doc.text",
                     actionTitle: "Start recording",
                     action: {
-                        NotificationCenter.default.post(name: .orionNewRecording, object: nil)
+                        NotificationCenter.default.post(name: .muffinNewRecording, object: nil)
                     }
                 )
             } else {
@@ -47,11 +47,6 @@ struct SummaryView: View {
                             subtitle: "Uses \(session.llmRouter.selectedProvider.displayName) from Settings. Always reads the latest transcript.md."
                         ) {
                             HStack(spacing: 8) {
-                                if let onOpenTranscript {
-                                    Button("Transcript") { onOpenTranscript() }
-                                        .buttonStyle(OrionQuietButtonStyle())
-                                }
-
                                 Picker("Format", selection: Binding(
                                     get: { session.selectedOutputTemplate },
                                     set: { session.selectOutputTemplate($0) }

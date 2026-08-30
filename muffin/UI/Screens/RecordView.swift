@@ -72,13 +72,12 @@ struct RecordView: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .top) {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 12)
+        ZStack(alignment: .top) {
+            ScrollView {
+                VStack(spacing: 0) {
+                    Spacer(minLength: 12)
 
-                        VStack(spacing: 20) {
+                    VStack(spacing: 20) {
                             if showCompletion {
                                 completionCard
                                     .frame(maxWidth: 520)
@@ -162,14 +161,14 @@ struct RecordView: View {
 
                         Spacer(minLength: 24)
                     }
-                    .frame(maxWidth: .infinity)
-                    .frame(minHeight: geo.size.height)
+                    .frame(maxWidth: .infinity, minHeight: 0)
                     .padding(.horizontal, 20)
                     .padding(.bottom, 28)
                 }
                 .scrollBounceBehavior(.basedOnSize)
+                .scrollIndicators(.never)
 
-                if let toastMessage {
+            if let toastMessage {
                     OrionToast(message: toastMessage)
                         .padding(.top, 16)
                         .transition(.move(edge: .top).combined(with: .opacity))
@@ -177,8 +176,7 @@ struct RecordView: View {
                 }
             }
             .animation(.easeOut(duration: 0.2), value: toastMessage)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var waveformState: WaveformView.State {
