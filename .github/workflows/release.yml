@@ -58,9 +58,9 @@ jobs:
             --icon "Muffin.app" 180 170 \
             --hide-extension "Muffin.app" \
             --app-drop-link 480 170 \
-            "$RUNNER_TEMP/Muffin-${VERSION}.dmg" \
+            "$RUNNER_TEMP/Muffin.dmg" \
             "$RUNNER_TEMP/dist/Muffin.app"
-          echo "DMG_PATH=$RUNNER_TEMP/Muffin-${VERSION}.dmg" >> "$GITHUB_ENV"
+          echo "DMG_PATH=$RUNNER_TEMP/Muffin.dmg" >> "$GITHUB_ENV"
           echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
 
       - name: Publish release
