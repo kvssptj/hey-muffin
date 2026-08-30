@@ -196,7 +196,7 @@ struct GuillocheDivider: View {
                 let amp = 3.0 + Double(i)
                 for x in stride(from: 0.0, through: size.width, by: 2) {
                     let u = x / size.width
-                    let y = midY + sin(u * .pi * 8 + Double(i)) * amp
+                    let y = midY + sin(u * Double.pi * 8.0 + Double(i)) * amp
                     if x == 0 { path.move(to: CGPoint(x: x, y: y)) }
                     else { path.addLine(to: CGPoint(x: x, y: y)) }
                 }
