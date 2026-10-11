@@ -41,9 +41,9 @@
     .nav-download { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #9cabb4; border-radius: 999px; padding: 11px 17px; white-space: nowrap; }
     .nav-download:hover { background: #e4edf2; }
     .hero { position: relative; padding: 166px 0 116px; overflow: hidden; background: linear-gradient(180deg, #245586 0%, #4075a6 50%, #e6f0f6 100%); }
-    .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 75vw; background-image: linear-gradient(180deg, rgba(11,29,46,.22), rgba(11,29,46,.28) 47%, rgba(11,29,46,.08) 80%), url('hero-cobalt.webp'); background-position: center top, center -130px; background-size: 100% 100%, 100% auto; background-repeat: no-repeat; mask-image: linear-gradient(180deg, #000 0%, #000 64%, transparent 100%); pointer-events: none; }
+    .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 75vw; background-image: linear-gradient(180deg, rgba(11,29,46,.22), rgba(11,29,46,.28) 47%, rgba(11,29,46,.08) 80%), url('hero-cobalt.webp'); background-position: center top, center clamp(-520px, calc(270px - 32vw), -130px); background-size: 100% 100%, 100% auto; background-repeat: no-repeat; mask-image: linear-gradient(180deg, #000 0%, #000 64%, transparent 100%); pointer-events: none; }
     .hero-copy { position: relative; isolation: isolate; max-width: 900px; margin: auto; text-align: center; }
-    .hero-copy::before { content: ""; position: absolute; z-index: -1; inset: -65px -90px; background: radial-gradient(ellipse at center, rgba(8,28,51,.32), transparent 70%); pointer-events: none; }
+    .hero-copy::before { content: ""; position: absolute; z-index: -1; inset: -65px -90px; background: radial-gradient(ellipse at center, rgba(8,28,51,.42), transparent 70%); pointer-events: none; }
     .hero h1 { max-width: 930px; margin: 0 auto; color: #fff; font-size: clamp(48px, 7vw, 94px); line-height: .99; font-weight: 600; letter-spacing: -.075em; }
     .hero h1 em { font-style: normal; color: #e6eadd; }
     .hero-lede { max-width: 600px; margin: 27px auto 29px; color: #e4edf2; font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; letter-spacing: -.015em; text-shadow: 0 1px 8px rgba(5,19,31,.8); }
