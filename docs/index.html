@@ -1,921 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muffin — Your thoughts, yours to own</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:           #DDE7EF;
-  --paper:        #FAFCFD;
-  --sidebar:      #E7EEF4;
-  --border:       #CBD8E2;
-  --ink:          #262B33;
-  --body:         #3E4650;
-  --muted:        #5A6472;
-  --primary:      #4F5A3C;
-  --primary-hover:#3E472E;
-  --primary-tint: #E6EADD;
-  --secondary:    #43678A;
-  --secondary-tint:#E4EDF2;
-  --success:      #4F6242;
-  --success-tint: #E5EBE1;
-  --h: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
-  --m: 'IBM Plex Mono', ui-monospace, monospace;
-
-  /* glass — dark enough for white text to read cleanly */
-  --glass-bg:     rgba(8, 22, 44, 0.62);
-  --glass-bg-dark:rgba(4, 14, 28, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.30);
-  --glass-blur:   blur(32px) saturate(160%);
-}
-
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--m);
-  background: var(--bg);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── NAV ───────────────────────────────────────────────────── */
-nav {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 56px;
-}
-
-.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.nav-logo img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
-.nav-wordmark {
-  font-family: var(--h); font-size: 18px; font-weight: 600;
-  letter-spacing: -.026em; color: #fff;
-  text-shadow: 0 1px 8px rgba(0,0,0,.4);
-}
-
-.nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
-.nav-links a {
-  font-family: var(--h); font-size: 14px; font-weight: 500;
-  color: rgba(255,255,255,.88); text-decoration: none;
-  text-shadow: 0 1px 6px rgba(0,0,0,.35);
-  transition: color .15s;
-}
-.nav-links a:hover { color: #fff; }
-
-.nav-cta {
-  font-family: var(--h); font-size: 13px; font-weight: 600;
-  letter-spacing: -.01em; padding: 8px 20px;
-  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.30);
-  border-radius: 8px; color: #fff; text-decoration: none;
-  backdrop-filter: blur(12px);
-  transition: background .15s;
-}
-.nav-cta:hover { background: rgba(255,255,255,.26); }
-
-/* ── HERO ───────────────────────────────────────────────────── */
-.hero {
-  position: relative;
-  display: flex; flex-direction: column; align-items: center;
-  overflow: hidden; background: #0F1E30;
-  padding-bottom: 80px;
-}
-
-.hero-bg {
-  position: absolute; inset: 0;
-  background-image: url('bg-mountain.png');
-  background-size: cover; background-position: center 70%;
-}
-
-/* top scrim */
-.hero-bg::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 14, 26, 0.75) 0%,
-    rgba(5, 14, 26, 0.35) 38%,
-    transparent 58%
-  );
-  pointer-events: none;
-}
-
-/* bottom fade */
-.hero-bg::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(
-    180deg,
-    transparent           38%,
-    rgba(5, 14, 26, 0.60) 70%,
-    rgba(5, 14, 26, 0.92) 100%
-  );
-  pointer-events: none;
-}
-
-.hero-content {
-  position: relative; z-index: 10;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center;
-  padding: 80px 24px 0;
-  width: 100%;
-}
-
-/* badge */
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--m); font-size: 11px; letter-spacing: .09em;
-  color: rgba(255,255,255,.80); background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.22); border-radius: 99px;
-  padding: 5px 15px; margin-bottom: 28px;
-  backdrop-filter: blur(10px);
-}
-.badge-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #80D97A; flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(128,217,122,.7);
-  animation: blink 2.5s ease-in-out infinite;
-}
-@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.25; } }
-
-/* headline — strong white, subtle text-shadow for depth */
-.hero-h1 {
-  font-family: var(--h);
-  font-size: clamp(46px, 7.5vw, 78px);
-  font-weight: 700;
-  letter-spacing: -.04em;
-  line-height: 1.02;
-  color: #fff;
-  text-shadow: 0 2px 24px rgba(0,0,0,.5);
-  margin-bottom: 20px;
-}
-
-.hero-sub {
-  font-family: var(--h);
-  font-size: clamp(16px, 2.2vw, 20px);
-  font-weight: 400;
-  color: #fff;
-  max-width: 510px;
-  line-height: 1.52;
-  letter-spacing: -.014em;
-  text-shadow: 0 1px 14px rgba(0,0,0,.65);
-  margin-bottom: 36px;
-}
-
-.hero-ctas { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; }
-
-.btn-primary {
-  font-family: var(--h); font-size: 16px; font-weight: 600; letter-spacing: -.022em;
-  padding: 14px 32px; background: var(--primary); color: #fff;
-  border-radius: 10px; text-decoration: none;
-  border: 1px solid rgba(0,0,0,.18);
-  box-shadow: 0 2px 12px rgba(0,0,0,.30), 0 0 0 1px rgba(255,255,255,.08) inset;
-  transition: background .15s, transform .1s;
-}
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-.btn-text {
-  font-family: var(--h); font-size: 15px; font-weight: 500;
-  color: rgba(255,255,255,.82); text-decoration: none;
-  text-shadow: 0 1px 8px rgba(0,0,0,.4);
-  transition: color .15s;
-}
-.btn-text:hover { color: #fff; }
-
-/* ── FROSTED GLASS RECORDING CARD ──────────────────────────── */
-.card-wrap {
-  position: relative; z-index: 10;
-  width: 100%; max-width: 600px; padding: 0 24px;
-}
-
-.rec-card {
-  border-radius: 16px; overflow: hidden;
-  /* frosted glass */
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    0 0 0 0.5px rgba(255,255,255,.12) inset,
-    0 8px 32px rgba(0,0,0,.22),
-    0 48px 96px rgba(0,0,0,.42);
-}
-
-/* titlebar */
-.rc-titlebar {
-  display: flex; align-items: center;
-  height: 42px; padding: 0 16px;
-  background: var(--glass-bg-dark);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,.12);
-}
-.tl-group { display: flex; gap: 7px; }
-.tl { width: 12px; height: 12px; border-radius: 50%; }
-.tl-r { background: #FF5F57; box-shadow: 0 0 6px rgba(255,95,87,.5); }
-.tl-y { background: #FFBD2E; box-shadow: 0 0 6px rgba(255,189,46,.4); }
-.tl-g { background: #28C840; box-shadow: 0 0 6px rgba(40,200,64,.4); }
-
-.rc-filename {
-  flex: 1; text-align: center;
-  font-family: var(--h); font-size: 13px; font-weight: 500;
-  color: rgba(255,255,255,.90); letter-spacing: -.012em;
-  transition: opacity .35s ease;
-}
-
-/* card body */
-.rc-body { padding: 26px 28px 28px; }
-
-.rc-top {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.rc-label {
-  font-family: var(--h); font-size: 18px; font-weight: 600;
-  color: #fff; letter-spacing: -.024em; margin-bottom: 4px;
-  text-shadow: 0 1px 8px rgba(0,0,0,.5);
-}
-
-.rc-timer {
-  font-family: var(--m); font-size: 13px; letter-spacing: .06em;
-  color: rgba(255,255,255,.72);
-  text-shadow: 0 1px 6px rgba(0,0,0,.4);
-}
-
-/* recording indicator — design system pulsing dot + label */
-.rec-indicator {
-  display: flex; align-items: center; gap: 7px;
-  background: rgba(140, 58, 44, 0.28);
-  border: 1px solid rgba(255, 100, 80, 0.30);
-  border-radius: 8px; padding: 7px 12px;
-  backdrop-filter: blur(6px);
-}
-
-.rec-ind-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #FF6055;
-  box-shadow: 0 0 8px rgba(255, 96, 85, 0.80);
-  animation: rec-pulse 1.2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-
-@keyframes rec-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.85); }
-}
-
-.rec-ind-label {
-  font-family: var(--m); font-size: 11px; font-weight: 500;
-  letter-spacing: .08em; color: rgba(255,255,255,.85);
-}
-
-/* ── waveform ─────────── */
-.rc-waveform {
-  display: flex; align-items: center; justify-content: center;
-  gap: 4px; height: 72px; margin-bottom: 24px;
-}
-.wf {
-  width: 4px; border-radius: 3px;
-  /* white bars — the "icy" look */
-  background: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(180,218,255,.70) 100%);
-}
-
-/* transcript — fixed height so the card never reflowes */
-.rc-transcript {
-  font-family: var(--m); font-size: 13.5px;
-  color: #fff; line-height: 1.72;
-  height: 92px;
-  overflow: hidden;
-  border-top: 1px solid rgba(255,255,255,.14);
-  padding-top: 18px;
-  transition: opacity .35s ease;
-  text-shadow: 0 1px 6px rgba(0,0,0,.5);
-}
-
-.cursor {
-  display: inline-block; width: 2px; height: 14px;
-  background: rgba(255,255,255,.80); margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: cur .85s step-end infinite;
-}
-@keyframes cur { 0%,100% { opacity:1; } 50% { opacity:0; } }
-
-/* ── 3 feature pills ────────────────────────────────────────── */
-.hero-pills {
-  position: relative; z-index: 10;
-  display: flex; justify-content: center;
-  padding: 44px 24px 68px;
-  width: 100%; max-width: 600px;
-  gap: 0;
-}
-.pill {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  gap: 8px; padding: 18px 14px; text-align: center;
-}
-.pill-icon { font-size: 22px; margin-bottom: 2px; }
-.pill-title {
-  font-family: var(--h); font-size: 13.5px; font-weight: 600;
-  color: #fff; letter-spacing: -.016em;
-  text-shadow: 0 1px 8px rgba(0,0,0,.4);
-}
-.pill-desc {
-  font-family: var(--m); font-size: 11.5px;
-  color: rgba(255,255,255,.68); line-height: 1.55;
-  text-shadow: 0 1px 6px rgba(0,0,0,.3);
-}
-
-/* ── SECTIONS ────────────────────────────────────────────────── */
-hr.divider { border: none; border-top: 1px solid var(--border); }
-
-.section { padding: 88px 56px; max-width: 980px; margin: 0 auto; }
-
-.section-label {
-  font-family: var(--m); font-size: 11px; letter-spacing: .10em;
-  text-transform: uppercase; color: var(--primary); margin-bottom: 14px;
-}
-/* secondary variant for MCP/CLI and Privacy sections */
-.section-label.blue { color: var(--secondary); }
-
-/* olive section */
-.section-olive { background: var(--sidebar); max-width: 100%; padding: 0 0 88px; }
-.section-olive > * { max-width: 980px; margin: 0 auto; padding: 0 56px; }
-.section-olive .section-label { padding-top: 88px; }
-.section-olive .sh { color: var(--ink); }
-.section-olive .sbody { color: var(--body); max-width: 560px; padding-bottom: 0; }
-.section-olive .feat-grid { padding: 0; margin: 40px auto 0; max-width: calc(980px - 112px); }
-
-h2.sh {
-  font-family: var(--h); font-size: clamp(28px, 4vw, 44px);
-  font-weight: 700; letter-spacing: -.034em; line-height: 1.08;
-  color: var(--ink); margin-bottom: 18px;
-}
-
-.sbody {
-  font-family: var(--m); font-size: 13.5px; color: var(--body);
-  line-height: 1.78; max-width: 560px;
-}
-
-.sbody + .sbody { margin-top: 14px; }
-
-.bg-paper   { background: var(--paper); }
-.bg-sidebar { background: var(--sidebar); }
-
-code.ic {
-  font-family: var(--m); font-size: 12px;
-  background: var(--primary-tint); color: var(--primary);
-  border-radius: 3px; padding: 1px 5px;
-}
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 40px; }
-
-/* compare block */
-.compare-wrap { background: #1B242E; border-radius: 10px; overflow: hidden; }
-.compare-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,.08); }
-.c-tab {
-  font-family: var(--m); font-size: 11px; letter-spacing: .06em;
-  text-transform: uppercase; padding: 11px 20px; color: rgba(255,255,255,.38);
-}
-.c-tab.active { color: rgba(255,255,255,.90); border-bottom: 2px solid var(--secondary); }
-.compare-code { padding: 22px 24px; }
-.compare-code pre { font-family: var(--m); font-size: 12.5px; color: #B8CDD8; line-height: 1.75; }
-
-.cb { background: #1B242E; border-radius: 8px; padding: 22px 24px; }
-.cb pre { font-family: var(--m); font-size: 12.5px; color: #B8CDD8; line-height: 1.7; }
-.cm { color: #4E6775; } .st { color: #98C79A; } .kw { color: #7EA8C8; }
-
-/* feature grid */
-.feat-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  border: 1px solid var(--border);
-  border-radius: 8px; overflow: hidden;
-  margin-top: 40px; margin-bottom: 0;
-}
-.fc {
-  background: var(--paper); padding: 28px 24px;
-  display: flex; flex-direction: column; gap: 10px;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.fc:nth-child(3n) { border-right: none; }
-.fc:nth-last-child(-n+3) { border-bottom: none; }
-.fc-icon { display: none; }
-.fc-title {
-  font-family: var(--h); font-size: 14px; font-weight: 600;
-  color: var(--ink); letter-spacing: -.018em; line-height: 1.25;
-}
-.fc-body {
-  font-family: var(--m); font-size: 12.5px; color: var(--muted);
-  line-height: 1.65; flex: 1;
-}
-.fc-link {
-  font-family: var(--m); font-size: 12px;
-  color: var(--muted); text-decoration: none; margin-top: 6px;
-}
-.fc-link:hover { color: var(--ink); }
-
-/* anti-pitch */
-.antipitch-list {
-  list-style: none; padding: 0; margin: 32px 0 28px;
-  display: flex; flex-direction: column; gap: 14px;
-}
-.antipitch-list li {
-  font-family: var(--m); font-size: 14px; color: var(--ink);
-  line-height: 1.5; padding-left: 20px; position: relative;
-}
-.antipitch-list li::before {
-  content: '✕'; position: absolute; left: 0;
-  color: var(--muted); font-size: 11px; top: 2px;
-}
-.antipitch-cta {
-  font-family: var(--m); font-size: 14px; color: var(--body);
-  line-height: 1.75; max-width: 580px; margin-top: 0;
-}
-.antipitch-alt {
-  font-style: italic; color: var(--muted);
-}
-
-/* FAQ flat */
-.faq-flat { margin-top: 40px; display: flex; flex-direction: column; gap: 2px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-.fq { background: var(--paper); padding: 22px 24px; display: flex; flex-direction: column; gap: 8px; }
-.fq-q { font-family: var(--h); font-size: 14px; font-weight: 500; letter-spacing: -.015em; color: var(--ink); line-height: 1.3; }
-.fq-a { font-family: var(--m); font-size: 13px; color: var(--body); line-height: 1.75; max-width: 640px; }
-
-/* CTA band */
-.cta-band { background: var(--primary); padding: 96px 56px; text-align: center; }
-.cta-band h2 { font-family: var(--h); font-size: clamp(28px, 4.5vw, 48px); font-weight: 700; letter-spacing: -.034em; color: #fff; margin-bottom: 16px; }
-.cta-band p { font-family: var(--m); font-size: 13.5px; color: rgba(255,255,255,.70); max-width: 420px; margin: 0 auto 36px; line-height: 1.70; }
-.btn-ivory { display: inline-flex; font-family: var(--h); font-size: 16px; font-weight: 600; letter-spacing: -.022em; padding: 14px 32px; background: var(--paper); color: var(--primary); border-radius: 10px; text-decoration: none; box-shadow: 0 2px 12px rgba(0,0,0,.2); transition: background .15s, transform .1s; }
-.btn-ivory:hover { background: var(--primary-tint); transform: translateY(-1px); }
-
-/* footer */
-footer { background: var(--ink); padding: 52px 56px 0; }
-.fi { max-width: 980px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; padding-bottom: 40px; }
-.fb-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
-.fb-logo img { width: 24px; height: 24px; border-radius: 6px; }
-.fb-name { font-family: var(--h); font-size: 15px; font-weight: 600; letter-spacing: -.022em; color: #fff; }
-.fb-tag { font-family: var(--m); font-size: 11.5px; color: rgba(255,255,255,.60); line-height: 1.6; max-width: 230px; }
-.fcols { display: flex; gap: 60px; }
-.fct { font-family: var(--h); font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 14px; }
-.flinks { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-.flinks a { font-family: var(--m); font-size: 12.5px; color: rgba(255,255,255,.75); text-decoration: none; transition: color .15s; }
-.flinks a:hover { color: #fff; }
-.fcopy { max-width: 980px; margin: 0 auto; padding: 20px 0; border-top: 1px solid rgba(255,255,255,.12); font-family: var(--m); font-size: 11px; color: rgba(255,255,255,.50); display: flex; justify-content: space-between; }
-
-/* ── SETUP SECTION (MCP + CLI) ─────────────────────────── */
-.setup-section {
-  padding: 88px 0;
-  border-top: 1px solid var(--border);
-  background: var(--paper);
-}
-.setup-wrap { max-width: 920px; margin: 0 auto; padding: 0 52px; }
-
-.setup-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;
-}
-
-.setup-card {
-  border: 1px solid var(--border); border-radius: 8px;
-  overflow: hidden; background: var(--paper);
-  box-shadow: 0 1px 4px rgba(20,20,20,.04);
-}
-
-.sc-head {
-  padding: 14px 20px; border-bottom: 1px solid var(--border);
-  font-family: var(--h); font-size: 11px; font-weight: 600;
-  letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
-  background: var(--sidebar);
-}
-
-.sc-body { padding: 20px; }
-.sc-body > p {
-  font-family: var(--m); font-size: 13px; color: var(--muted);
-  line-height: 1.65; margin: 0 0 16px;
-}
-
-.sc-body pre {
-  background: var(--ink); color: #D8E4EE;
-  font-family: var(--m); font-size: 12px; line-height: 1.75;
-  padding: 16px 18px; border-radius: 6px;
-  margin: 0 0 12px; overflow-x: auto;
-  white-space: pre;
-}
-.sc-key  { color: #8FB0CC; }
-.sc-val  { color: #98C47A; }
-.sc-cmt  { color: #6A7E6A; }
-
-.copy-row { display: flex; justify-content: flex-end; }
-.copy-btn {
-  font-family: var(--h); font-size: 11px; font-weight: 500;
-  color: var(--muted); background: transparent;
-  border: 1px solid var(--border); border-radius: 4px;
-  padding: 5px 12px; cursor: pointer; letter-spacing: -.01em;
-  transition: border-color .15s, color .15s;
-}
-.copy-btn:hover { border-color: var(--secondary); color: var(--secondary); }
-
-/* ── BUILT ON ──────────────────────────────────────────── */
-.built-on {
-  padding: 40px 0; border-top: 1px solid var(--border);
-  text-align: center; background: var(--paper);
-}
-.built-on-label {
-  font-family: var(--m); font-size: 11px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
-}
-.built-on-row {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 20px 40px; font-family: var(--h); font-size: 13.5px;
-  font-weight: 500; color: var(--muted);
-}
-.built-on-row span { white-space: nowrap; }
-
-@media (max-width: 740px) {
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }
-  .hero-content { padding: 110px 20px 0; }
-  .card-wrap { padding: 0 16px; }
-  .hero-pills { flex-direction: column; align-items: center; padding-bottom: 48px; }
-  .section { padding: 64px 24px; }
-  .two-col { grid-template-columns: 1fr; gap: 28px; }
-  .feat-grid { grid-template-columns: 1fr; }
-  .fi { flex-direction: column; }
-  .fcols { gap: 28px; flex-wrap: wrap; }
-  footer { padding: 48px 24px 0; }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dde7ef">
+  <meta name="description" content="Muffin records your voice, transcribes it on your Mac, and turns it into useful notes. Your audio and transcripts stay as files you own.">
+  <title>Muffin — Your voice, made useful</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Muffin app colors, shared by the page and its gradient surfaces. */
+      --paper: #dde7ef; --white: #fafcfd; --ink: #262b33; --muted: #5a6472;
+      --olive: #4f5a3c; --olive-dark: #3e472e; --line: #cbd8e2;
+      --blue: #e4edf2; --mono: "DM Mono", ui-monospace, monospace;
+      --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+      --page-gradient: linear-gradient(180deg, #dde7ef 0%, #f4f9fc 22%, #dce9f2 50%, #f3f8fb 76%, #dbe8f1 100%);
+      --panel-gradient: radial-gradient(ellipse 70% 95% at 52% 108%, rgba(156,185,205,.55), transparent 80%), linear-gradient(135deg, #edf4f8, #d6e4ef 58%, #dce9f2);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #132538; color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    main { background: var(--page-gradient); }
+    a { color: inherit; }
+    button { font: inherit; }
+    img { max-width: 100%; }
+    .wrap { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 0 21px; border-radius: 999px; border: 1px solid transparent; background: var(--olive); color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; transition: transform .18s, background .18s; }
+    .button:hover { background: var(--olive-dark); transform: translateY(-2px); }
+    .button:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #68a7df; outline-offset: 3px; }
+    .text-link { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+    .text-link:hover { color: var(--olive); }
+    .site-nav { position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between; min-height: 88px; gap: 24px; color: #fafcfd; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; letter-spacing: -.05em; text-decoration: none; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; }
+    .nav-links { display: flex; align-items: center; gap: 31px; }
+    .nav-links a { font-size: 13px; font-weight: 600; color: #d3e0e7; text-decoration: none; }
+    .nav-links a:hover { color: #fff; }
+    .nav-download { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #91a5b3; border-radius: 999px; padding: 11px 17px; white-space: nowrap; }
+    .nav-download:hover { background: rgba(255,255,255,.12); }
+    .hero { position: relative; padding: 78px 0 116px; overflow: hidden; background: linear-gradient(180deg, #132538 0%, #173148 47%, #e6f0f6 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 75vw; background-image: linear-gradient(180deg, rgba(11,29,46,.62), rgba(11,29,46,.52) 47%, rgba(11,29,46,.22) 80%), url('bg-mountain.png'); background-position: center top, center -130px; background-size: 100% 100%, 100% auto; background-repeat: no-repeat; mask-image: linear-gradient(180deg, #000 0%, #000 64%, transparent 100%); pointer-events: none; }
+    .hero-copy { position: relative; max-width: 900px; margin: auto; text-align: center; }
+    .hero h1 { max-width: 930px; margin: 0 auto; color: #fff; font-size: clamp(48px, 7vw, 94px); line-height: .99; font-weight: 600; letter-spacing: -.075em; }
+    .hero h1 em { font-style: normal; color: #e6eadd; }
+    .hero-lede { max-width: 600px; margin: 27px auto 29px; color: #e4edf2; font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; letter-spacing: -.015em; }
+    .hero .text-link { color: #fff; text-shadow: 0 1px 6px rgba(5,19,31,.65); }
+    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 23px; flex-wrap: wrap; }
+    .hero-meta { margin: 17px 0 0; color: #e5eef0; font: 11px var(--mono); text-shadow: 0 1px 6px rgba(5,19,31,.85); }
+    .product-stage { position: relative; width: min(1040px, calc(100% - 64px)); margin: 94px auto 0; padding: 34px 48px 48px; border-radius: 28px; background: var(--panel-gradient); border: 1px solid #c2d2de; box-shadow: 0 35px 80px rgba(38,43,51,.1); }
+    .stage-grid { display: grid; grid-template-columns: .89fr 1.11fr; gap: 28px; align-items: stretch; }
+    .recording-card { border-radius: 17px; background: #262b33; color: #fafcfd; box-shadow: 0 24px 46px rgba(38,43,51,.22); overflow: hidden; }
+    .window-bar { display: flex; align-items: center; gap: 7px; height: 40px; padding: 0 17px; border-bottom: 1px solid #4a5662; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #63726c; }
+    .dot:nth-child(1) { background: #e88674; } .dot:nth-child(2) { background: #e9bf60; } .dot:nth-child(3) { background: #81b978; }
+    .window-name { margin: auto; padding-right: 25px; color: #b4c5c2; font: 10px var(--mono); transition: opacity .3s ease; }
+    .recording-body { padding: 29px 28px 31px; }
+    .recording-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .recording-head strong { font-size: 18px; letter-spacing: -.035em; }
+    .recording-time { display: block; margin-top: 4px; color: #a6bbb8; font: 11px var(--mono); font-variant-numeric: tabular-nums; }
+    .live-pill { display: inline-flex; align-items: center; gap: 6px; color: #f8c9c1; border: 1px solid #74504c; background: #432f32; border-radius: 999px; padding: 6px 9px; font: 10px var(--mono); }
+    .live-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #f07061; box-shadow: 0 0 0 3px rgba(240,112,97,.12); animation: recording-pulse 2.4s ease-in-out infinite; }
+    .wave { display: flex; justify-content: center; align-items: center; gap: 3px; height: 91px; margin: 19px 0 17px; }
+    .wave i { width: 3px; height: 12px; flex: none; border-radius: 99px; background: linear-gradient(#e2f3f5,#9dbec5); transition: height .23s ease-in-out; }
+    @keyframes recording-pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 3px rgba(240,112,97,.12); } 50% { opacity: .55; box-shadow: 0 0 0 5px rgba(240,112,97,.05); } }
+    @keyframes cursor-blink { 50% { opacity: 0; } }
+    .spoken-cursor { display: inline-block; width: 1px; height: 1em; margin-left: 3px; background: #c9dfd8; vertical-align: -.15em; animation: cursor-blink 1.1s steps(1,end) infinite; }
+    @media (prefers-reduced-motion: reduce) { .live-pill::before, .spoken-cursor { animation: none; } }
+    .transcript-label { border-top: 1px solid #3b4b50; padding-top: 18px; color: #9fb9b5; font: 10px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+    .spoken { min-height: 86px; margin: 8px 0 0; color: #e6eeec; font-size: 13px; line-height: 1.65; }
+    .note-card { position: relative; min-height: 350px; border-radius: 17px; background: var(--white); padding: 31px 35px; box-shadow: 0 26px 48px rgba(38,43,51,.13); }
+    .note-kicker { color: var(--olive); font: 10px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+    .note-card h2 { margin: 21px 0 8px; font-size: 29px; line-height: 1.1; letter-spacing: -.055em; }
+    .note-summary { margin: 0 0 23px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .note-section { margin: 0 0 11px; color: #6d796d; font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .note-list { list-style: none; padding: 0; margin: 0; }
+    .note-list li { display: flex; gap: 10px; align-items: baseline; padding: 8px 0; border-top: 1px solid #e4edf2; color: var(--ink); font-size: 13px; }
+    .note-list li::before { content: "□"; color: var(--olive); font-size: 17px; line-height: 0; }
+    .stage-foot { position: absolute; bottom: 17px; right: 26px; color: #43678a; font: 10px var(--mono); }
+    .section { padding: 110px 0; border-top: 1px solid rgba(107,124,141,.18); background: radial-gradient(ellipse 55% 82% at 98% 12%, rgba(190,215,230,.31), transparent 85%); }
+    .section-title { margin: 0; font-size: clamp(38px, 4.5vw, 58px); font-weight: 600; line-height: 1.08; letter-spacing: -.065em; }
+    .section-lede { max-width: 590px; margin: 19px 0 0; color: var(--muted); font-size: 17px; line-height: 1.65; }
+    .process { border-top: 1px solid rgba(107,124,141,.18); background: radial-gradient(ellipse 65% 90% at 0% 75%, rgba(188,215,231,.36), transparent 83%); }
+    .process-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; }
+    .process-head .section-lede { max-width: 370px; margin-bottom: 7px; }
+    .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
+    .process-item { min-height: 300px; display: flex; flex-direction: column; padding: 28px; border: 1px solid var(--line); border-radius: 15px; background: var(--white); overflow: hidden; }
+    .process-no { color: var(--olive); font: 12px var(--mono); }
+    .process-art { height: 116px; display: flex; align-items: center; justify-content: center; margin: 20px 0 8px; border-radius: 10px; background: var(--panel-gradient); }
+    .mini-rec { display: flex; align-items: center; gap: 12px; width: 72%; padding: 12px 14px; color: #fafcfd; background: #262b33; border-radius: 999px; box-shadow: 0 9px 19px rgba(38,43,51,.15); font: 10px var(--mono); }
+    .mini-rec b { display: block; width: 9px; height: 9px; border-radius: 50%; background: #d87165; box-shadow: 0 0 0 4px rgba(216,113,101,.16); }
+    .mini-rec span { flex: 1; }
+    .mini-rec i { width: 39px; height: 21px; background: repeating-linear-gradient(90deg,#c2d2de 0 2px,transparent 2px 5px); mask-image: radial-gradient(ellipse at center,#000 50%,transparent 76%); }
+    .mini-transcript { width: 78%; padding: 14px; border: 1px solid #cbd8e2; border-radius: 8px; background: #fafcfd; box-shadow: 0 9px 19px rgba(38,43,51,.08); }
+    .mini-transcript span { display: block; height: 5px; margin: 7px 0; border-radius: 99px; background: #cbd8e2; }
+    .mini-transcript span:nth-child(2) { width: 87%; } .mini-transcript span:nth-child(3) { width: 64%; background: #9fbccf; }
+    .mini-output { display: grid; gap: 7px; width: 77%; padding: 14px; border-radius: 8px; background: #fafcfd; box-shadow: 0 9px 19px rgba(38,43,51,.08); }
+    .mini-output span { padding: 6px 8px; border-radius: 4px; background: #e6eadd; color: #4f5a3c; font: 10px var(--mono); }
+    .process-item h3 { margin: auto 0 9px; font-size: 23px; letter-spacing: -.05em; }
+    .process-item p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .ownership { color: var(--ink); overflow: hidden; }
+    .ownership-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 90px; align-items: center; }
+    .ownership .text-link { margin-top: 28px; }
+    .file-stack { border: 1px solid #6b7c8d; border-radius: 16px; background: #344251; color: #fafcfd; padding: 26px; box-shadow: 0 22px 48px rgba(38,43,51,.12); }
+    .file-title { display: flex; align-items: center; gap: 9px; color: #e4edf2; font: 12px var(--mono); padding-bottom: 18px; border-bottom: 1px solid #6b7c8d; }
+    .file-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 3px; border-bottom: 1px solid #536576; font: 12px var(--mono); }
+    .file-row:last-child { border: 0; }
+    .file-row span:last-child { color: #c2d2de; }
+    .file-row b { color: #b8d1e3; font-weight: 400; }
+    .outputs { background: radial-gradient(ellipse 65% 100% at 95% 50%, rgba(191,215,229,.42), transparent 84%); }
+    .outputs-layout { display: grid; grid-template-columns: 340px 1fr; gap: 60px; align-items: start; }
+    .outputs-intro { position: sticky; top: 30px; }
+    .output-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 35px; }
+    .output-tabs button { padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--muted); cursor: pointer; font-size: 12px; font-weight: 700; }
+    .output-tabs button[aria-selected="true"] { background: var(--olive); color: #fff; border-color: var(--olive); }
+    .output-document { min-height: 420px; padding: 36px 44px; border: 1px solid var(--line); border-radius: 17px; background: var(--panel-gradient); box-shadow: 0 22px 40px rgba(38,43,51,.06); }
+    .doc-top { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 18px; color: #788276; font: 10px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+    .output-document h3 { margin: 30px 0 20px; font-size: 31px; font-weight: 600; letter-spacing: -.055em; }
+    .output-document p, .output-document li { color: #4c584d; font-size: 14px; line-height: 1.7; }
+    .output-document ul { padding-left: 19px; }
+    .output-document li + li { margin-top: 12px; }
+    .output-document small { display: block; margin-top: 30px; color: #849083; font: 10px var(--mono); }
+    .technical { border-top: 1px solid rgba(107,124,141,.18); background: radial-gradient(ellipse 60% 90% at 5% 70%, rgba(191,215,229,.36), transparent 86%); }
+    .technical-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: start; }
+    .technical-points { display: grid; gap: 0; }
+    .technical-points div { padding: 20px 0; border-bottom: 1px solid var(--line); }
+    .technical-points strong { display: block; font-size: 15px; margin-bottom: 6px; }
+    .technical-points span { color: #667166; font-size: 13px; line-height: 1.6; }
+    .faq { padding-top: 90px; padding-bottom: 110px; border-top: 1px solid rgba(107,124,141,.18); background: radial-gradient(ellipse 62% 90% at 90% 38%, rgba(191,215,229,.35), transparent 86%); }
+    .faq-layout { display: grid; grid-template-columns: 340px 1fr; gap: 60px; }
+    .faq details { border-bottom: 1px solid var(--line); }
+    .faq details:first-child { border-top: 1px solid var(--line); }
+    .faq summary { list-style: none; cursor: pointer; padding: 23px 26px 23px 0; position: relative; font-size: 15px; font-weight: 700; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; position: absolute; right: 3px; top: 18px; color: var(--olive); font-size: 23px; font-weight: 400; }
+    .faq details[open] summary::after { content: "−"; }
+    .faq details p { max-width: 660px; margin: 0 0 24px; color: #626d62; font-size: 14px; line-height: 1.7; }
+    .download-section { padding: 25px 0 105px; background: transparent; }
+    .download-panel { width: min(1180px, calc(100% - 64px)); position: relative; isolation: isolate; overflow: hidden; margin: auto; min-height: 390px; border: 1px solid var(--line); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 65px 25px; background: var(--panel-gradient); box-shadow: 0 25px 60px rgba(38,43,51,.08); }
+    .download-panel::after { content: ""; position: absolute; z-index: -1; inset: 35% 0 0; opacity: .12; background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 15px 15px; mask-image: linear-gradient(transparent, #000); }
+    .download-panel h2 { margin: 0 0 16px; font-size: clamp(37px, 4.3vw, 57px); line-height: 1.07; font-weight: 600; letter-spacing: -.065em; }
+    .download-panel p { max-width: 440px; margin: 0 0 25px; color: var(--muted); font-size: 15px; line-height: 1.6; }
+    .download-panel small { margin-top: 14px; color: var(--muted); font: 10px var(--mono); }
+    footer { background: #262b33; color: #fafcfd; padding: 62px 0 28px; }
+    .footer-grid { display: flex; justify-content: space-between; gap: 50px; }
+    .footer-brand .brand { color: #fff; }
+    .footer-brand p { max-width: 300px; margin: 17px 0 0; color: #aabbaa; font-size: 13px; line-height: 1.6; }
+    .footer-links { display: flex; gap: 80px; }
+    .footer-links h3 { margin: 0 0 17px; color: #90a690; font: 10px var(--mono); text-transform: uppercase; letter-spacing: .1em; }
+    .footer-links a { display: block; margin: 0 0 12px; color: #dfe9db; font-size: 13px; text-decoration: none; }
+    .footer-links a:hover { color: #fff; text-decoration: underline; }
+    .copyright { display: flex; justify-content: space-between; gap: 20px; margin-top: 60px; padding-top: 22px; border-top: 1px solid #3e5142; color: #8fa38e; font: 10px var(--mono); }
+    @media (max-width: 850px) {
+      .nav-links { display: none; }
+      .hero { padding: 64px 0 80px; }
+      .product-stage { padding: 32px 24px 35px; }
+      .stage-grid { gap: 17px; }
+      .recording-body { padding: 23px 20px; }
+      .note-card { padding: 24px; }
+      .ownership-grid, .technical-grid { gap: 40px; }
+      .outputs-layout, .faq-layout { grid-template-columns: 280px 1fr; gap: 35px; }
+    }
+    @media (max-width: 650px) {
+      .wrap { width: min(100% - 36px, 1180px); }
+      .site-nav { min-height: 70px; }
+      .brand { font-size: 17px; }
+      .nav-download { padding: 9px 12px; }
+      .hero { padding: 65px 0 75px; }
+      .hero::before { height: 650px; background-image: linear-gradient(180deg, rgba(11,29,46,.7), rgba(11,29,46,.72) 65%, rgba(11,29,46,.45)), url('bg-mountain.png'); background-size: 100% 100%, auto 650px; background-position: center top, 50% -75px; }
+      .hero h1 { font-size: clamp(47px, 12vw, 68px); }
+      .hero-lede { font-size: 16px; }
+      .product-stage { width: calc(100% - 28px); margin-top: 68px; padding: 20px 16px 30px; border-radius: 20px; }
+      .stage-grid, .process-grid, .ownership-grid, .outputs-layout, .technical-grid, .faq-layout { grid-template-columns: 1fr; }
+      .stage-grid { gap: 18px; }
+      .note-card { min-height: auto; }
+      .stage-foot { position: static; text-align: center; margin: 21px 0 0; }
+      .section { padding: 78px 0; }
+      .process-head { display: block; }
+      .process-grid { gap: 12px; margin-top: 32px; }
+      .process-item { min-height: 180px; }
+      .ownership-grid { gap: 40px; }
+      .outputs-intro { position: static; }
+      .output-document { min-height: 390px; padding: 26px; }
+      .download-section { padding: 14px 0 75px; }
+      .download-panel { width: calc(100% - 36px); min-height: 375px; }
+      .footer-grid, .copyright { flex-direction: column; }
+      .footer-links { gap: 45px; flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button { transition: none; } }
+  </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <img src="icon.png" alt="Muffin">
-    <span class="nav-wordmark">Muffin</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#why">Why</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#mcp">MCP + CLI</a></li>
-    <li><a href="#not-for">Not for everyone</a></li>
-  </ul>
-  <a href="https://github.com/kvssptj/hey-muffin" class="nav-cta" target="_blank" rel="noopener">
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" style="display:inline-block;vertical-align:-.15em;margin-right:6px" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>View on GitHub
-  </a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-
-  <div class="hero-content">
-    <h1 class="hero-h1">Your thoughts.<br>Yours to own.</h1>
-    <p class="hero-sub">Muffin transcribes your voice directly on your Mac. No cloud uploads. No proprietary databases. Just plain files on your hard drive.</p>
-    <div class="hero-ctas">
-      <a href="https://github.com/kvssptj/hey-muffin/releases/latest/download/Muffin.dmg" class="btn-primary">Download for macOS →</a>
-      <a href="#why" class="btn-text">See how it works →</a>
-    </div>
-  </div>
-
-  <!-- Frosted Glass Recording Card -->
-  <div class="card-wrap">
-    <div class="rec-card">
-      <div class="rc-titlebar">
-        <div class="tl-group">
-          <div class="tl tl-r"></div>
-          <div class="tl tl-y"></div>
-          <div class="tl tl-g"></div>
+  <header class="site-nav wrap">
+    <a class="brand" href="#top" aria-label="Muffin home"><img src="icon.png" alt="">Muffin</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a><a href="#outputs">What you get</a><a href="#privacy">Your files</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="nav-download" href="#download">Get Muffin ↗</a>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy wrap">
+        <h1>Your voice,<br><em>made useful.</em></h1>
+        <p class="hero-lede">Record what’s on your mind. Muffin turns your words into a transcript, a clear summary, and the next steps—right on your Mac.</p>
+        <div class="hero-actions">
+          <a class="button" href="https://github.com/kvssptj/hey-muffin/releases/latest/download/Muffin.dmg">Download for macOS <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↘</span></a>
         </div>
-        <div class="rc-filename" id="rc-filename">Daily To-do List.md</div>
+        <p class="hero-meta">macOS 26 or later · No account needed</p>
       </div>
-      <div class="rc-body">
-        <div class="rc-top">
-          <div>
-            <div class="rc-label">Recording...</div>
-            <div class="rc-timer" id="rc-timer">00:00:00</div>
+      <div class="product-stage" aria-label="Illustrative example of a Muffin recording and its action items">
+        <div class="stage-grid">
+          <div class="recording-card">
+            <div class="window-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="window-name" id="recording-filename">Weekend plans.md</span></div>
+            <div class="recording-body">
+              <div class="recording-head"><div><strong>Recording...</strong><span class="recording-time" aria-label="Illustrative recording timer">00:00:00</span></div><span class="live-pill">REC</span></div>
+              <div class="wave" aria-hidden="true"><i style="--h:12px;--i:1"></i><i style="--h:19px;--i:2"></i><i style="--h:27px;--i:3"></i><i style="--h:16px;--i:4"></i><i style="--h:35px;--i:5"></i><i style="--h:49px;--i:6"></i><i style="--h:31px;--i:7"></i><i style="--h:58px;--i:8"></i><i style="--h:43px;--i:9"></i><i style="--h:65px;--i:10"></i><i style="--h:50px;--i:11"></i><i style="--h:70px;--i:12"></i><i style="--h:56px;--i:13"></i><i style="--h:42px;--i:14"></i><i style="--h:63px;--i:15"></i><i style="--h:49px;--i:16"></i><i style="--h:72px;--i:17"></i><i style="--h:59px;--i:18"></i><i style="--h:47px;--i:19"></i><i style="--h:67px;--i:20"></i><i style="--h:51px;--i:21"></i><i style="--h:37px;--i:22"></i><i style="--h:54px;--i:23"></i><i style="--h:42px;--i:24"></i><i style="--h:28px;--i:25"></i><i style="--h:35px;--i:26"></i><i style="--h:20px;--i:27"></i><i style="--h:13px;--i:28"></i></div>
+              <div class="transcript-label">Live transcript</div>
+              <p class="spoken" id="recording-transcript" aria-label="Call Maya about Saturday, book a table for six, and pick up the cake on the way."><span id="recording-words" aria-hidden="true">Call Maya about Saturday, book a table for six, and pick up the cake on the way.</span><span class="spoken-cursor" aria-hidden="true"></span></p>
+            </div>
           </div>
-          <div class="rec-indicator">
-            <div class="rec-ind-dot"></div>
-            <span class="rec-ind-label">REC</span>
+          <div class="note-card">
+            <div class="note-kicker">✦ &nbsp; Muffin · Action items</div>
+            <h2 id="example-title">Weekend plans</h2>
+            <p class="note-summary" id="example-summary">The plan is taking shape. Here’s what needs to happen next.</p>
+            <p class="note-section">Next steps</p>
+            <ul class="note-list" id="example-actions"><li>Call Maya about Saturday</li><li>Book a table for six</li><li>Pick up the cake on the way</li></ul>
           </div>
         </div>
-        <div class="rc-waveform" id="rc-waveform"></div>
-        <div class="rc-transcript" id="rc-transcript"></div>
+        <p class="stage-foot">Illustrative example · Your recordings and notes are saved locally</p>
       </div>
-    </div>
-  </div>
-
-</section>
-
-<hr class="divider">
-
-<!-- WHY -->
-<section id="why" class="section bg-paper" style="max-width:100%;padding:0;">
-<div class="section" style="padding-top:88px;padding-bottom:88px;">
-  <div class="section-label">Why Muffin</div>
-  <h2 class="sh">I like software that gets<br>out of the way.</h2>
-  <p class="sbody">Most voice tools work like this: you talk, your audio goes to their servers, your transcript lives in their database. If you want your data back, you hope they built an export button. If they shut down, your notes go with them.</p>
-  <p class="sbody" style="margin-top:14px">Muffin works from the opposite rule. Your audio is a file on your Mac. Your transcript is a <code class="ic">.txt</code> or <code class="ic">.md</code> file in a folder you can open right now in Finder. No account. No proprietary format. If Muffin disappears tomorrow, your notes stay exactly where they are.</p>
-  <p class="sbody" style="margin-top:20px;color:var(--primary);font-family:var(--h);font-size:15px;font-weight:600;letter-spacing:-.02em">No subscriptions. You own it forever.</p>
-</div>
-</section>
-
-<hr class="divider">
-
-<!-- FEATURES -->
-<section id="features" class="section section-olive">
-  <div class="section-label">Features</div>
-  <h2 class="sh">Everything you need.<br>Nothing you don't.</h2>
-  <div class="feat-grid">
-
-    <div class="fc">
-      <div class="fc-title">Local audio recording</div>
-      <div class="fc-body">AVAudioEngine captures mic input straight to <code class="ic">audio.caf</code>. Start, stop, pause, add a marker — no cloud upload, ever.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">On-device transcription</div>
-      <div class="fc-body">SpeechAnalyzer writes <code class="ic">transcript.md</code> the moment you stop. Watch words appear live as you speak — no network call, ever.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">Confidence highlighting</div>
-      <div class="fc-body">Low-confidence words are highlighted in the live transcript so you can catch mis-heard names or jargon before saving.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">Auto-save &amp; auto-copy</div>
-      <div class="fc-body">Transcript is saved to disk and copied to your clipboard the moment recording stops — ready to paste anywhere without lifting a finger.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">Menu bar access</div>
-      <div class="fc-body">Start a recording from the menu bar without launching the full app. One click, done. The app stays out of your way.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">Bring your own model</div>
-      <div class="fc-body">Defaults to Apple Intelligence on-device. Or bring your own key — OpenRouter, Ollama, whatever you run.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">Editable transcripts</div>
-      <div class="fc-body">Fix a mis-heard name, restructure a paragraph. Edits write back to the source <code class="ic">.md</code> file directly.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">CLI for scripting</div>
-      <div class="fc-body"><code class="ic">muffin list</code>, <code class="ic">muffin transcript</code>, <code class="ic">muffin generate</code> — reads the same folder the app writes to.</div>
-    </div>
-
-    <div class="fc">
-      <div class="fc-title">MCP server for agents</div>
-      <div class="fc-body">Five stdio tools, no auth. Claude Desktop (or any MCP client) can list, read, edit, and summarize directly.</div>
-    </div>
-
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- MCP + CLI -->
-<section id="mcp" class="setup-section">
-  <div class="setup-wrap">
-    <div class="section-label blue" style="text-align:center;margin-bottom:14px">MCP + CLI</div>
-    <h2 class="sh" style="text-align:center;max-width:22ch;margin:0 auto 14px">Loved by shell scripts,<br>built for agents.</h2>
-    <p class="sbody" style="text-align:center;margin:0 auto 48px;max-width:52ch">Set up the CLI or point an MCP client at Muffin in under five minutes. No console, no API key to generate first.</p>
-
-    <div class="setup-grid">
-
-      <div class="setup-card">
-        <div class="sc-head">Set up the CLI</div>
-        <div class="sc-body">
-          <p>Reads and writes the same folder the app uses — nothing to sync, nothing to configure.</p>
-          <pre><span class="sc-cmt">$ brew install --cask muffin</span>
-<span class="sc-cmt">$ muffin list</span>
-ID        TITLE              DATE         DUR
-a1b2c3d4  Daily To-do List   2026-08-30   04:51
-e5f6g7h8  Product Ideas      2026-08-28   12:33
-
-<span class="sc-cmt">$ muffin transcript a1b2c3d4 --format txt</span></pre>
-          <div class="copy-row">
-            <button class="copy-btn" onclick="navigator.clipboard.writeText('muffin transcript a1b2c3d4 --format txt')">Copy</button>
-          </div>
+    </section>
+    <section class="section process" id="how-it-works">
+      <div class="wrap">
+        <div class="process-head">
+          <div><h2 class="section-title">Thoughts move fast.<br>Muffin keeps up.</h2></div>
+          <p class="section-lede">A simple flow from the first sentence to something you can use.</p>
+        </div>
+        <div class="process-grid">
+          <article class="process-item"><span class="process-no">01 / CAPTURE</span><div class="process-art" aria-hidden="true"><div class="mini-rec"><b></b><span>Recording</span><i></i></div></div><h3>Just start talking.</h3><p>Record from the app or menu bar. Muffin saves the audio directly to your Mac.</p></article>
+          <article class="process-item"><span class="process-no">02 / TRANSCRIBE</span><div class="process-art" aria-hidden="true"><div class="mini-transcript"><span></span><span></span><span></span></div></div><h3>See it take shape.</h3><p>Apple’s on-device speech recognition turns your voice into an editable transcript.</p></article>
+          <article class="process-item"><span class="process-no">03 / USE IT</span><div class="process-art" aria-hidden="true"><div class="mini-output"><span>✓ &nbsp; Summary</span><span>✓ &nbsp; Action items</span></div></div><h3>Leave with clarity.</h3><p>Generate a summary, meeting notes, or action items with the model you choose.</p></article>
         </div>
       </div>
-
-      <div class="setup-card">
-        <div class="sc-head">Connect the MCP server</div>
-        <div class="sc-body">
-          <p>Add <code class="ic">muffin-mcp</code> to your MCP client's config. Five tools, local stdio, no auth required.</p>
-          <pre>{
-  <span class="sc-key">"mcpServers"</span>: {
-    <span class="sc-key">"muffin"</span>: {
-      <span class="sc-key">"command"</span>: <span class="sc-val">"/usr/local/bin/muffin-mcp"</span>
+    </section>
+    <section class="section outputs" id="outputs">
+      <div class="wrap outputs-layout">
+        <div class="outputs-intro">
+          <h2 class="section-title">The useful part comes next.</h2>
+          <p class="section-lede">A voice note can be a thought to remember, a meeting to revisit, or a list of things to do. Choose what you need.</p>
+          <div class="output-tabs" role="tablist" aria-label="Example outputs">
+            <button type="button" role="tab" aria-selected="true" aria-controls="output-document" id="tab-summary" data-output="summary">Summary</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="output-document" id="tab-actions" data-output="actions">Action items</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="output-document" id="tab-transcript" data-output="transcript">Transcript</button>
+          </div>
+        </div>
+        <div class="output-document" id="output-document" role="tabpanel" aria-labelledby="tab-summary">
+          <div class="doc-top"><span>Weekend plans.md</span><span>Illustrative example</span></div>
+          <div id="output-content"><h3>The plan for Saturday</h3><p>After catching up with Maya, the group will meet for dinner on Saturday. A table for six needs to be booked, and the cake should be picked up on the way.</p><ul><li>Confirm the timing with Maya.</li><li>Book a table for six.</li><li>Collect the cake before dinner.</li></ul></div>
+          <small>Saved as a file on your Mac</small>
+        </div>
+      </div>
+    </section>
+    <section class="section ownership" id="privacy">
+      <div class="wrap ownership-grid">
+        <div>
+          <h2 class="section-title">A folder you own.<br>Not a black box.</h2>
+          <p class="section-lede">Muffin records locally and transcribes on-device. Your audio, transcript, and generated notes are ordinary files you can open, edit, and keep. For summaries, use Apple Intelligence on-device or choose OpenRouter or Ollama.</p>
+          <a class="text-link" href="https://github.com/kvssptj/hey-muffin" target="_blank" rel="noopener">Explore the open-source project <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="file-stack" aria-label="Files saved for each recording">
+          <div class="file-title">▣ &nbsp; Recordings / Weekend plans</div>
+          <div class="file-row"><span><b>♪</b> &nbsp; audio.caf</span><span>Original recording</span></div>
+          <div class="file-row"><span><b>≡</b> &nbsp; transcript.md</span><span>Editable text</span></div>
+          <div class="file-row"><span><b>≡</b> &nbsp; transcript.txt</span><span>Plain text</span></div>
+          <div class="file-row"><span><b>↳</b> &nbsp; outputs/</span><span>Your generated notes</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="section technical">
+      <div class="wrap technical-grid">
+        <div><h2 class="section-title">Small app.<br>Open doors.</h2><p class="section-lede">Use Muffin at your desk, from a script, or with an agent. It all works with the same recordings on disk.</p></div>
+        <div class="technical-points">
+          <div><strong>Mac app + menu bar</strong><span>Start a recording without rearranging your day.</span></div>
+          <div><strong>CLI</strong><span>List recordings, read transcripts, and generate outputs from the terminal.</span></div>
+          <div><strong>MCP server</strong><span>Let compatible agents find and work with your recordings through local tools.</span></div>
+          <div><strong>Your choice of model</strong><span>Apple Intelligence, Ollama, or OpenRouter for generated outputs.</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="faq" id="faq">
+      <div class="wrap faq-layout">
+        <div><h2 class="section-title">The details.</h2></div>
+        <div>
+          <details><summary>Where are my recordings saved?</summary><p>In your Mac’s Application Support folder, as audio, transcript, metadata, and generated output files. The files are yours to copy or back up.</p></details>
+          <details><summary>Does transcription need an internet connection?</summary><p>No. Transcription uses Apple’s on-device Speech framework. Generated notes use the provider you select; Apple Intelligence and Ollama can run locally, while OpenRouter uses a network connection.</p></details>
+          <details><summary>What Mac do I need?</summary><p>Muffin requires macOS 26 or later, plus microphone and Speech Recognition permissions. Some generation options depend on the model provider you choose.</p></details>
+          <details><summary>Is there a subscription or an account?</summary><p>Muffin needs no account and has no subscription. If you choose a paid cloud model through OpenRouter, that provider may charge for its use.</p></details>
+        </div>
+      </div>
+    </section>
+    <section class="download-section" id="download">
+      <div class="download-panel">
+        <h2>Keep the thought.<br>Make it count.</h2>
+        <p>Start with your voice. End with notes you can use and files you can keep.</p>
+        <a class="button" href="https://github.com/kvssptj/hey-muffin/releases/latest/download/Muffin.dmg">↓ &nbsp; Download for macOS</a>
+        <small>macOS 26 or later · No account needed</small>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand"><a class="brand" href="#top"><img src="icon.png" alt="">Muffin</a><p>Thoughts out loud. Useful notes on your Mac. Files that stay yours.</p></div>
+        <div class="footer-links">
+          <div><h3>Explore</h3><a href="#how-it-works">How it works</a><a href="#outputs">What you get</a><a href="#privacy">Your files</a><a href="#faq">FAQ</a></div>
+          <div><h3>Project</h3><a href="https://github.com/kvssptj/hey-muffin" target="_blank" rel="noopener">GitHub ↗</a><a href="https://github.com/kvssptj/hey-muffin#readme" target="_blank" rel="noopener">Documentation ↗</a><a href="#download">Download</a></div>
+        </div>
+      </div>
+      <div class="copyright"><span>© 2026 Muffin</span><span>Made for macOS · Built to stay yours</span></div>
+    </div>
+  </footer>
+  <script>
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const scenarios = [
+      {
+        file: 'Weekend plans.md', title: 'Weekend plans',
+        transcript: 'Call Maya about Saturday, book a table for six, and pick up the cake on the way.',
+        summary: 'The plan is taking shape. Here’s what needs to happen next.',
+        actions: ['Call Maya about Saturday', 'Book a table for six', 'Pick up the cake on the way']
+      },
+      {
+        file: 'Product Ideas.md', title: 'Product ideas',
+        transcript: 'What if we added spatial audio to the recording? It could help with speaker separation later on. A one-click export to Obsidian would be useful too.',
+        summary: 'Two ideas to explore after this recording.',
+        actions: ['Explore spatial audio', 'Research speaker separation', 'Prototype an Obsidian export']
+      },
+      {
+        file: 'Daily To-do List.md', title: 'Today’s to-do list',
+        transcript: 'Call the contractor about the bathroom tile, pick up coffee beans on the way home, and finish the budget spreadsheet before five.',
+        summary: 'A few reminders, already organized.',
+        actions: ['Call the contractor', 'Pick up coffee beans', 'Finish the budget spreadsheet']
+      }
+    ];
+    const wave = document.querySelector('.wave');
+    while (wave.children.length < 36) wave.appendChild(document.createElement('i'));
+    const bars = [...wave.children].map((bar, index) => {
+      const distance = Math.abs(index - 17.5) / 17.5;
+      const base = 8 + (1 - distance * distance) * 62;
+      bar.style.height = `${base}px`;
+      return { bar, base };
+    });
+    if (!motionQuery.matches) {
+      setInterval(() => {
+        if (document.hidden) return;
+        bars.forEach(({ bar, base }) => {
+          bar.style.height = `${Math.max(7, Math.min(82, base + (Math.random() - .5) * 23))}px`;
+        });
+      }, 220);
     }
-  }
-}
-<span class="sc-cmt">// list · get · edit · generate · search</span></pre>
-          <div class="copy-row">
-            <button class="copy-btn" onclick="navigator.clipboard.writeText('/usr/local/bin/muffin-mcp')">Copy</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- Built on -->
-<div class="built-on">
-  <div class="setup-wrap">
-    <p class="built-on-label">Built on</p>
-    <div class="built-on-row">
-      <span>Apple SpeechAnalyzer</span>
-      <span>AVFoundation</span>
-      <span>Swift &amp; SwiftUI</span>
-      <span>Model Context Protocol</span>
-      <span>OpenRouter</span>
-      <span>Ollama</span>
-    </div>
-  </div>
-</div>
-
-<hr class="divider">
-
-<!-- ANTI-PITCH -->
-<section id="not-for" class="section">
-  <div class="section-label">The honest pitch</div>
-  <h2 class="sh">Who this is<br>not for.</h2>
-  <p class="sbody">Let's be clear about what Muffin doesn't do.</p>
-  <ul class="antipitch-list">
-    <li>There is no iPhone app.</li>
-    <li>There is no cloud sync between devices.</li>
-    <li>There is no team calendar integration or automatic meeting bot.</li>
-  </ul>
-  <p class="antipitch-cta">If you want an all-in-one corporate meeting suite, buy <span class="antipitch-alt">Granola</span> or <span class="antipitch-alt">Wisprflow</span> or <span class="antipitch-alt">Monologue</span>.<br>If you want a lightweight, local Mac tool that respects your disk and your privacy, you'll love Muffin.</p>
-</section>
-
-<hr class="divider">
-
-<!-- FAQ -->
-<section id="faq" class="section bg-paper" style="max-width:100%;padding:0;">
-<div class="section" style="padding-top:88px;padding-bottom:88px;">
-  <div class="section-label">FAQ</div>
-  <h2 class="sh">Common questions.<br>Answered plainly.</h2>
-  <div class="faq-flat">
-    <div class="fq">
-      <div class="fq-q">Does it work on my phone, or sync across devices?</div>
-      <div class="fq-a">No. Muffin is Mac-only, single-device, on purpose. That's not a roadmap gap — it's the whole point.</div>
-    </div>
-    <div class="fq">
-      <div class="fq-q">Any speaker diarization? Calendar auto-join? A bot that joins my calls?</div>
-      <div class="fq-a">No, no, and no. Muffin records what your Mac's mic picks up, manually started. We didn't forget to build a meeting bot — we chose not to.</div>
-    </div>
-    <div class="fq">
-      <div class="fq-q">Do you train on my recordings or see my transcripts?</div>
-      <div class="fq-a">Transcription runs on your Mac. The summary step talks to whichever provider you configured — your key, your bill, your data.</div>
-    </div>
-    <div class="fq">
-      <div class="fq-q">Is there a subscription?</div>
-      <div class="fq-a">No. Local recording and transcription are free. The AI summary step is $0 if you use the default Apple Intelligence provider — it runs entirely on your Mac. If you switch to OpenRouter or another cloud provider, you pay whatever they charge.</div>
-    </div>
-    <div class="fq">
-      <div class="fq-q">What if I'm on macOS 25 or earlier?</div>
-      <div class="fq-a">Muffin won't run — SpeechAnalyzer requires macOS 26 (Tahoe). No bundled fallback ASR yet.</div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="cta-band" id="download">
-  <h2>Start recording in 60 seconds.</h2>
-  <p>Install, grant two permissions, hit record. Everything after that is a folder you already know how to read.</p>
-  <a href="https://github.com/kvssptj/hey-muffin/releases/latest/download/Muffin.dmg" class="btn-ivory">Download for macOS →</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="fi">
-    <div>
-      <div class="fb-logo">
-        <img src="icon.png" alt="Muffin">
-        <span class="fb-name">Muffin</span>
-      </div>
-      <p class="fb-tag">Recorded locally, transcribed on-device, stored as files. macOS only.</p>
-    </div>
-    <div class="fcols">
-      <div>
-        <div class="fct">Product</div>
-        <ul class="flinks">
-          <li><a href="#why">Why Muffin</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#not-for">Not for everyone</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="fct">Developers</div>
-        <ul class="flinks">
-          <li><a href="#">CLI reference</a></li>
-          <li><a href="#">MCP tools</a></li>
-          <li><a href="#">Quickstart</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="fct">Requirements</div>
-        <ul class="flinks">
-          <li><a href="#">macOS 26+</a></li>
-          <li><a href="#">No account needed</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="fcopy">
-    <span>© 2026 Muffin — No telemetry · No account · Files, not a DB</span>
-    <span>Built on macOS, for macOS</span>
-  </div>
-</footer>
-
-<script>
-const scenarios = [
-  {
-    file: 'Daily To-do List.md',
-    text: 'Call the contractor about the bathroom tile, pick up coffee beans on the way home, and finish that budget spreadsheet before the 5 o\'clock deadline.'
-  },
-  {
-    file: 'Product Ideas.md',
-    text: 'What if we added spatial audio to the recording? Could help with speaker separation later on. Also a one-click export to Obsidian would be huge for people already in that workflow.'
-  },
-  {
-    file: 'Weekly Review.md',
-    text: 'Shipped the redesign on Thursday, which felt good. Next week: follow up with the design contractor, prep the Q3 roadmap slides, and finally clear that backlog of support tickets.'
-  }
-];
-
-// Build waveform — mountain-bell profile, icy white bars
-const wfEl = document.getElementById('rc-waveform');
-const N = 36;
-const bars = [];
-for (let i = 0; i < N; i++) {
-  const b = document.createElement('div');
-  b.className = 'wf';
-  const center = N / 2;
-  const dist = Math.abs(i - center) / center;
-  const base = Math.max(8, 97 - dist * dist * 88);
-  b.style.height = base + '%';
-  wfEl.appendChild(b);
-  bars.push({ el: b, base });
-}
-
-function animateWaveform() {
-  bars.forEach(b => {
-    const v = (Math.random() - .5) * 42;
-    const h = Math.max(6, Math.min(100, b.base + v));
-    b.el.style.height = h + '%';
-    b.el.style.transition = 'height ' + (100 + Math.random() * 200) + 'ms ease';
-  });
-}
-setInterval(animateWaveform, 140);
-
-// Timer
-let sec = 0;
-setInterval(() => {
-  sec++;
-  const fmt = n => String(n).padStart(2, '0');
-  document.getElementById('rc-timer').textContent =
-    fmt(Math.floor(sec / 3600)) + ':' + fmt(Math.floor((sec % 3600) / 60)) + ':' + fmt(sec % 60);
-}, 1000);
-
-// Cycling typewriter
-let sIdx = 0, cIdx = 0, tiv = null;
-const filenameEl  = document.getElementById('rc-filename');
-const transcriptEl = document.getElementById('rc-transcript');
-
-function showScenario(idx) {
-  const s = scenarios[idx];
-  filenameEl.style.opacity = '0';
-  transcriptEl.style.opacity = '0';
-  setTimeout(() => {
-    filenameEl.textContent = s.file;
-    transcriptEl.innerHTML = '';
-    filenameEl.style.opacity = '1';
-    transcriptEl.style.opacity = '1';
-    cIdx = 0;
-    if (tiv) clearInterval(tiv);
-    tiv = setInterval(() => {
-      cIdx = Math.min(cIdx + 3, s.text.length);
-      transcriptEl.innerHTML = s.text.slice(0, cIdx) + '<span class="cursor"></span>';
-      if (cIdx >= s.text.length) clearInterval(tiv);
-    }, 38);
-  }, 380);
-}
-
-showScenario(0);
-setInterval(() => {
-  sIdx = (sIdx + 1) % scenarios.length;
-  showScenario(sIdx);
-}, 8500);
-</script>
+    const recordingTime = document.querySelector('.recording-time');
+    if (recordingTime && !motionQuery.matches) {
+      const startedAt = Date.now();
+      setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+        const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const seconds = String(elapsed % 60).padStart(2, '0');
+        recordingTime.textContent = `00:${minutes}:${seconds}`;
+      }, 1000);
+    }
+    if (!motionQuery.matches) {
+      const filename = document.getElementById('recording-filename');
+      const transcript = document.getElementById('recording-transcript');
+      const words = document.getElementById('recording-words');
+      const title = document.getElementById('example-title');
+      const summary = document.getElementById('example-summary');
+      const actions = document.getElementById('example-actions');
+      let scenarioIndex = 0;
+      let typing;
+      function showScenario(scenario) {
+        clearInterval(typing);
+        filename.textContent = scenario.file;
+        transcript.setAttribute('aria-label', scenario.transcript);
+        title.textContent = scenario.title;
+        summary.textContent = scenario.summary;
+        actions.replaceChildren(...scenario.actions.map(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          return li;
+        }));
+        words.textContent = '';
+        let position = 0;
+        typing = setInterval(() => {
+          position = Math.min(position + 3, scenario.transcript.length);
+          words.textContent = scenario.transcript.slice(0, position);
+          if (position === scenario.transcript.length) clearInterval(typing);
+        }, 44);
+      }
+      showScenario(scenarios[0]);
+      setInterval(() => {
+        if (document.hidden) return;
+        scenarioIndex = (scenarioIndex + 1) % scenarios.length;
+        showScenario(scenarios[scenarioIndex]);
+      }, 9000);
+    }
+    const examples = {
+      summary: '<h3>The plan for Saturday</h3><p>After catching up with Maya, the group will meet for dinner on Saturday. A table for six needs to be booked, and the cake should be picked up on the way.</p><ul><li>Confirm the timing with Maya.</li><li>Book a table for six.</li><li>Collect the cake before dinner.</li></ul>',
+      actions: '<h3>Three things to do</h3><ul><li>Call Maya and confirm Saturday’s timing.</li><li>Book a dinner table for six.</li><li>Pick up the cake before meeting the group.</li></ul>',
+      transcript: '<h3>What you said</h3><p>“Call Maya about Saturday, book a table for six, and pick up the cake on the way.”</p>'
+    };
+    const tabs = [...document.querySelectorAll('.output-tabs [role="tab"]')];
+    const panel = document.getElementById('output-document');
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        const next = tabs[(index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+        selectTab(next);
+        next.focus();
+      });
+    });
+    function selectTab(tab) {
+      tabs.forEach(item => { item.setAttribute('aria-selected', String(item === tab)); item.tabIndex = item === tab ? 0 : -1; });
+      panel.setAttribute('aria-labelledby', tab.id);
+      document.getElementById('output-content').innerHTML = examples[tab.dataset.output];
+    }
+    tabs.forEach(tab => { tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1; });
+  </script>
 </body>
 </html>
