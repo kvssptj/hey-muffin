@@ -40,8 +40,8 @@
     .nav-links a:hover { color: var(--olive); }
     .nav-download { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #9cabb4; border-radius: 999px; padding: 11px 17px; white-space: nowrap; }
     .nav-download:hover { background: #e4edf2; }
-    .hero { position: relative; padding: 166px 0 116px; overflow: hidden; background: linear-gradient(180deg, #245586 0%, #4075a6 50%, #e6f0f6 100%); }
-    .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 75vw; background-image: linear-gradient(180deg, rgba(11,29,46,.22), rgba(11,29,46,.28) 47%, rgba(11,29,46,.08) 80%), url('hero-cobalt.webp'); background-position: center top, center clamp(-520px, calc(270px - 32vw), -130px); background-size: 100% 100%, 100% auto; background-repeat: no-repeat; mask-image: linear-gradient(180deg, #000 0%, #000 64%, transparent 100%); pointer-events: none; }
+    .hero { position: relative; padding: 166px 0 116px; overflow: hidden; background: linear-gradient(180deg, #214b79 0%, #2d6595 47%, #a9c7d9 76%, #e6f0f6 100%); }
+    .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 880px; background: url('hero-cobalt.webp') center 58% / cover no-repeat; mask-image: linear-gradient(180deg, transparent 0%, transparent 40%, #000 57%, #000 80%, transparent 100%); pointer-events: none; }
     .hero-copy { position: relative; isolation: isolate; max-width: 900px; margin: auto; text-align: center; }
     .hero-copy::before { content: ""; position: absolute; z-index: -1; inset: -65px -90px; background: radial-gradient(ellipse at center, rgba(8,28,51,.42), transparent 70%); pointer-events: none; }
     .hero h1 { max-width: 930px; margin: 0 auto; color: #fff; font-size: clamp(48px, 7vw, 94px); line-height: .99; font-weight: 600; letter-spacing: -.075em; }
@@ -168,7 +168,7 @@
       .brand { font-size: 17px; }
       .nav-download { padding: 9px 12px; }
       .hero { padding: 135px 0 75px; }
-      .hero::before { height: 700px; background-image: linear-gradient(180deg, rgba(11,29,46,.35), rgba(11,29,46,.48) 45%, rgba(11,29,46,.46) 70%, rgba(11,29,46,.16)), url('hero-cobalt.webp'); background-size: 100% 100%, auto 700px; background-position: center top, 50% -75px; }
+      .hero::before { inset: 125px 0 auto; height: 710px; background-position: center center; background-size: auto 710px; mask-image: linear-gradient(180deg, transparent 0%, transparent 25%, #000 48%, #000 82%, transparent 100%); }
       .hero-copy::before { inset: -55px -35px; }
       .hero h1 { font-size: clamp(47px, 12vw, 68px); }
       .hero-lede { font-size: 16px; }
