@@ -32,14 +32,14 @@
     .button:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #68a7df; outline-offset: 3px; }
     .text-link { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
     .text-link:hover { color: var(--olive); }
-    .site-nav { position: absolute; z-index: 5; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; min-height: 88px; gap: 24px; color: #fafcfd; }
+    .site-nav { position: absolute; z-index: 5; inset: 16px 0 auto; display: flex; align-items: center; justify-content: space-between; min-height: 68px; gap: 24px; padding: 0 22px; border: 1px solid rgba(255,255,255,.72); border-radius: 18px; background: rgba(250,252,253,.88); box-shadow: 0 12px 36px rgba(9,35,62,.13); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); color: var(--ink); }
     .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; letter-spacing: -.05em; text-decoration: none; }
     .brand img { width: 32px; height: 32px; border-radius: 9px; }
     .nav-links { display: flex; align-items: center; gap: 31px; }
-    .nav-links a { font-size: 13px; font-weight: 600; color: #d3e0e7; text-decoration: none; }
-    .nav-links a:hover { color: #fff; }
-    .nav-download { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #91a5b3; border-radius: 999px; padding: 11px 17px; white-space: nowrap; }
-    .nav-download:hover { background: rgba(255,255,255,.12); }
+    .nav-links a { font-size: 13px; font-weight: 600; color: #3d4b56; text-decoration: none; }
+    .nav-links a:hover { color: var(--olive); }
+    .nav-download { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #9cabb4; border-radius: 999px; padding: 11px 17px; white-space: nowrap; }
+    .nav-download:hover { background: #e4edf2; }
     .hero { position: relative; padding: 166px 0 116px; overflow: hidden; background: linear-gradient(180deg, #245586 0%, #4075a6 50%, #e6f0f6 100%); }
     .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 75vw; background-image: linear-gradient(180deg, rgba(11,29,46,.22), rgba(11,29,46,.28) 47%, rgba(11,29,46,.08) 80%), url('hero-cobalt.webp'); background-position: center top, center -130px; background-size: 100% 100%, 100% auto; background-repeat: no-repeat; mask-image: linear-gradient(180deg, #000 0%, #000 64%, transparent 100%); pointer-events: none; }
     .hero-copy { position: relative; isolation: isolate; max-width: 900px; margin: auto; text-align: center; }
@@ -164,7 +164,7 @@
     }
     @media (max-width: 650px) {
       .wrap { width: min(100% - 36px, 1180px); }
-      .site-nav { min-height: 70px; }
+      .site-nav { inset: 12px 0 auto; min-height: 60px; padding: 0 14px; border-radius: 15px; }
       .brand { font-size: 17px; }
       .nav-download { padding: 9px 12px; }
       .hero { padding: 135px 0 75px; }
