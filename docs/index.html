@@ -40,10 +40,9 @@
     .nav-links a:hover { color: var(--olive); }
     .nav-download { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #9cabb4; border-radius: 999px; padding: 11px 17px; white-space: nowrap; }
     .nav-download:hover { background: #e4edf2; }
-    .hero { position: relative; padding: 166px 0 116px; overflow: hidden; background: linear-gradient(180deg, #214b79 0%, #2d6595 47%, #a9c7d9 76%, #e6f0f6 100%); }
-    .hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 880px; background: url('hero-cobalt.webp') center 58% / cover no-repeat; mask-image: linear-gradient(180deg, transparent 0%, transparent 40%, #000 57%, #000 80%, transparent 100%); pointer-events: none; }
-    .hero-copy { position: relative; isolation: isolate; max-width: 900px; margin: auto; text-align: center; }
-    .hero-copy::before { content: ""; position: absolute; z-index: -1; inset: -65px -90px; background: radial-gradient(ellipse at center, rgba(8,28,51,.42), transparent 70%); pointer-events: none; }
+    .hero { position: relative; padding: 166px 0 116px; overflow: hidden; background: #214b79; }
+    .hero::before { content: ""; position: absolute; inset: 0; background: url('hero-cobalt.webp') center 58% / cover no-repeat; pointer-events: none; }
+    .hero-copy { position: relative; max-width: 900px; margin: auto; text-align: center; }
     .hero h1 { max-width: 930px; margin: 0 auto; color: #fff; font-size: clamp(48px, 7vw, 94px); line-height: .99; font-weight: 600; letter-spacing: -.075em; }
     .hero h1 em { font-style: normal; color: #e6eadd; }
     .hero-lede { max-width: 600px; margin: 27px auto 29px; color: #e4edf2; font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; letter-spacing: -.015em; text-shadow: 0 1px 8px rgba(5,19,31,.8); }
@@ -167,9 +166,8 @@
       .site-nav { inset: 12px 0 auto; min-height: 60px; padding: 0 14px; border-radius: 15px; }
       .brand { font-size: 17px; }
       .nav-download { padding: 9px 12px; }
-      .hero { padding: 135px 0 75px; }
-      .hero::before { inset: 125px 0 auto; height: 710px; background-position: center center; background-size: auto 710px; mask-image: linear-gradient(180deg, transparent 0%, transparent 25%, #000 48%, #000 82%, transparent 100%); }
-      .hero-copy::before { inset: -55px -35px; }
+      .hero { padding: 135px 0 75px; background: #e6f0f6; }
+      .hero::before { inset: 0 0 auto; height: 900px; background-position: center top; background-size: auto 900px; }
       .hero h1 { font-size: clamp(47px, 12vw, 68px); }
       .hero-lede { font-size: 16px; }
       .product-stage { width: calc(100% - 36px); margin-top: 68px; padding: 0 0 30px; }
